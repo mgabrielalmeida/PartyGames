@@ -222,3 +222,23 @@ a {
     /* Fundo ciano transparente */
     color: var(--accent-secondary);
 }
+
+/* =========================================
+   8. ANIMAÇÕES DE TRANSIÇÃO (app.js)
+   ========================================= */
+body {
+    /* A página começa invisível */
+    opacity: 0;
+    /* A transição vai durar 0.4 segundos */
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* O app.js vai adicionar essa classe assim que a página carregar */
+body.page-loaded {
+    opacity: 1;
+}
+
+/* O app.js vai adicionar essa classe quando o usuário clicar em um link */
+body.page-exit {
+    opacity: 0;
+}

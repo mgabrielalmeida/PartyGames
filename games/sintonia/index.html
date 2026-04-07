@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Wavelength Simulator</title>
+
+    <link rel="stylesheet" href="../../assets/css/global.css">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="placar">
-        <div id="placar-j1" class="jogador ativo">
-            <h2>Jogador 1</h2>
-            <p id="pontos-j1">0 pts</p>
+    <header class="barra-superior">
+
+        <a href="../../index.html" class="back-btn">← Voltar</a>
+
+        <div class="placar">
+            <div id="placar-j1" class="jogador ativo">
+                <h2>Jogador 1</h2>
+                <p id="pontos-j1">0 pts</p>
+            </div>
+            <div id="placar-j2" class="jogador">
+                <h2>Jogador 2</h2>
+                <p id="pontos-j2">0 pts</p>
+            </div>
         </div>
-        <div id="placar-j2" class="jogador">
-            <h2>Jogador 2</h2>
-            <p id="pontos-j2">0 pts</p>
-        </div>
-    </div>
+
+    </header>
 
     <h1>Sintonia</h1>
-    
+
     <div class="toggle-container">
         <label class="switch">
             <input type="checkbox" id="toggle-sugestao" checked>
@@ -34,9 +45,9 @@
 
     <div class="area-jogo">
         <div class="extremo esquerdo" id="extremo-esq">Quente</div>
-        
+
         <div class="roda">
-            
+
             <div class="alvo"></div>
 
             <div class="tampa-fixa-inferior"></div>
@@ -48,14 +59,17 @@
 
         <div class="extremo direito" id="extremo-dir">Frio</div>
     </div>
-    
+
     <div class="botoes">
         <button id="btn-girar">Girar Roleta (Novo Alvo)</button>
         <button id="btn-revelar">Abrir/Fechar Tampa</button>
         <button id="btn-palpite">Palpite!</button>
     </div>
 
+    <script src="../../assets/js/app.js"></script>
+
     <script src="script.js"></script>
 
 </body>
+
 </html>

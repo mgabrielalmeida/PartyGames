@@ -22,13 +22,13 @@ const toggleSugestao = document.querySelector('#toggle-sugestao');
 
 const listaPares = [
     ["Quente", "Frio"], ["Atraente", "Feio"], ["Fácil", "Difícil"],
-    ["Cheiro Bom", "Cheiro Ruim"], ["Nerd", "Chique"], ["Saudável", "Junk Food"],
+    ["Cheiro Bom", "Cheiro Ruim"], ["Saudável", "Junk Food"],
     ["Obra-Prima", "Lixo"], ["Popular", "Nicho"], ["Superestimado", "Subestimado"],
     ["Caro", "Barato"], ["Relaxante", "Estressante"], ["Útil", "Inútil"],
-    ["Maduro", "Infantil"], ["Normal", "Estranho"], ["Divertido", "Chato"],
-    ["Esporte Real", "Esporte Falso"], ["Herói", "Vilão"], ["Seco", "Molhado"],
-    ["Macio", "Áspero"], ["Doce", "Salgado"], ["Famoso", "Desconhecido"], ["Duro", "Mole"],
-    ["Longo", "Curto"], ["Fino", "Grosso"], ["Pessoa legal", "Pessoa chata"], ["Gostoso", "Nojento"]
+    ["Maduro", "Infantil"], ["Normal", "Estranho"], ["Divertido", "Chato"], ["Herói", "Vilão"],
+    ["Seco", "Molhado"], ["Macio", "Áspero"], ["Doce", "Salgado"], ["Famoso", "Desconhecido"],
+    ["Duro", "Mole"], ["Longo", "Curto"], ["Fino", "Grosso"], ["Pessoa legal", "Pessoa chata"],
+    ["Gostoso", "Nojento"], ["Situação constrangedora", "Situação comum"]
 ];
 
 function atualizarSugestao() {

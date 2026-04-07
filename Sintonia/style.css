@@ -1,0 +1,358 @@
+/* --- RESET BÁSICO (Manteve-se igual) --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #282c34;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding-top: 50px;
+}
+
+h1 { margin-bottom: 10px; }
+p { margin-bottom: 30px; opacity: 0.8; }
+
+/* --- PLACAR E TURNOS --- */
+.placar {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.jogador {
+    background-color: #3e4451;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0.5;
+    transform: scale(0.9);
+}
+
+.jogador.ativo {
+    opacity: 1;
+    border-color: #07f1b7;
+    box-shadow: 0 0 20px rgba(7, 241, 183, 0.4);
+    transform: scale(1.1);
+}
+
+.jogador h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.jogador p {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 0;
+    color: #07f1b7;
+    opacity: 1;
+}
+
+/* --- TOGGLE E DICA DE RODADA --- */
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #3e4451;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #07f1b7;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#dica-rodada {
+    font-size: 22px;
+    margin-bottom: 20px;
+    transition: all 0.5s ease;
+}
+
+#dica-rodada .destaque {
+    font-weight: bold;
+    color: #07f1b7;
+}
+
+.dica-animada {
+    animation: flashInfo 1s ease-out;
+}
+
+@keyframes flashInfo {
+    0% { transform: scale(1.1); color: #fff; text-shadow: 0 0 20px #fff; }
+    100% { transform: scale(1); }
+}
+
+/* --- AREA JOGO E EXTREMOS --- */
+.area-jogo {
+    position: relative;
+    width: 800px; /* Largura fixa que acomoda a roda e 200px pra cada lado */
+    max-width: 100%;
+    margin: 20px auto 40px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.extremo {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    width: 180px; /* Ocupa exatamente 180px para não empurrar a roda */
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.extremo.esquerdo {
+    left: 0;
+}
+
+.extremo.direito {
+    right: 0;
+}
+
+.extremo.oculto {
+    opacity: 0;
+}
+
+/* --- A RODA (Ponto de Referência - Agora um Círculo Completo) --- */
+.roda {
+    /* --- CORREÇÃO: Tamanho igual para um círculo perfeito --- */
+    width: 400px;
+    height: 400px;
+    margin: 0; /* A margem agora fica na area-jogo */
+    
+    /* --- CORREÇÃO: Arredonda todos os cantos igualmente (50% do tamanho) --- */
+    border-radius: 50%;
+    
+    position: relative; 
+    overflow: hidden; /* Corta o gradiente para mostrar só o círculo */
+    
+    /* --- CORREÇÃO: Borda em toda a volta para dar acabamento --- */
+    border: 5px solid #07f1b7; 
+}
+
+/* --- O ALVO (O segredo do Gradiente 360º) --- */
+.alvo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    
+    /* --- CORREÇÃO PRINCIPAL: Gradiente Cônico Centralizado --- */
+    /* Ele nasce no 'center center' e cobre apenas uma fatia de 180º (50%) */
+    background-image: conic-gradient(
+        from 0deg at center center, 
+        
+        /* Preenche com cinza escuro do início (0%) até o começo do alvo */
+        #3e4451 0% 71.25%, 
+
+        /* AS FAIXAS DE PONTUAÇÃO (exatamente 1.5% cada) */
+        #e74c3c 71.25% 72.75%, /* Vermelho 1 */
+        #f1c40f 72.75% 74.25%, /* Amarelo 1 */
+        #2ecc71 74.25% 75.75%, /* Verde (Alvo) - O meio exato é o 75%! */
+        #f1c40f 75.75% 77.25%, /* Amarelo 2 */
+        #e74c3c 77.25% 78.75%, /* Vermelho 2 */
+
+        /* Preenche o resto do círculo com cinza escuro até o final (100%) */
+        #3e4451 78.75% 100%
+    );
+    
+    transition: transform 2s ease-in-out;
+}
+
+/* --- O PONTEIRO (Dial - Centralizado e Redimensionado) --- */
+.ponteiro {
+    background-color: #ffffff;
+    width: 6px;
+    
+    /* --- CORREÇÃO: Altura é 50% do círculo para ir do centro à borda --- */
+    height: 50%; 
+    
+    position: absolute;
+    
+    /* --- CORREÇÃO: Posiciona a base exatamente no centro --- */
+    top: 0; /* Começa no topo da div '.roda' */
+    left: 50%; /* Centraliza horizontalmente */
+    
+    /* --- CORREÇÃO PRINCIPAL: Puxa o ponteiro para que sua BASE fique no centro --- */
+    /* translateX(-50%) centraliza horizontalmente em relação ao próprio eixo */
+    /* translateY(0%) mantém o topo do ponteiro no topo da roda, e a base no centro */
+    transform: translateX(-50%) translateY(0%) rotate(0deg); 
+    
+    /* --- CORREÇÃO: O ponto de rotação agora é a BASE (que está no centro do círculo) --- */
+    transform-origin: bottom center; 
+    
+    border-radius: 3px 3px 3px 3px; /* Arredonda só o topo */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+/* Estilo do Botão (Manteve-se igual) */
+button {
+    background-color: #ff4757;
+    color: white;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #ff6b81;
+}
+
+/* --- Estilo Base para ambas as tampas --- */
+.tampa-fixa-inferior,
+.tampa-superior {
+    position: absolute;
+    width: 100%;
+    height: 50%; /* Ocupa metade da roda */
+    background-color: #07f1b7; /* Mesma cor de fundo para esconder perfeitamente */
+    left: 0;
+    
+    /* Garante que fiquem acima do alvo colorido, mas abaixo do ponteiro */
+    z-index: 5; 
+
+    transform-origin: bottom center; /* O eixo de rotação é a base da tampa */
+    /* Efeito de rotação realista, começando devagar, acelerando e freando: */
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Posicionando o Esconderijo Inferior --- */
+.tampa-fixa-inferior {
+    bottom: 0; /* Coloca na base da roda */
+    border-radius: 0 0 200px 200px; /* Arredonda só em baixo */
+}
+
+/* --- Posicionando a Tampa Superior Movel --- */
+.tampa-superior {
+    top: 0; /* Coloca no topo da roda */
+    border-radius: 200px 200px 0 0; /* Arredonda só em cima */
+}
+
+/* Quando o JS adicionar esta classe à tampa superior, ela vai abrir como uma porta */
+.tampa-superior.escondida {
+    /* opacity: 0; <-- CERTIFIQUE-SE DE APAGAR O OPACITY ANTIGO! */
+    transform: rotate(-180deg); /* Gira a tampa 180 graus para o lado esquerdo */
+}
+
+/* Organizando os botões lado a lado */
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espaço entre os botões */
+    margin-top: 20px;
+}
+
+/* --- ESTILOS DA MENSAGEM DE RESULTADO --- */
+.mensagem-resultado {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    font-size: 100px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease-out;
+}
+
+.mensagem-resultado.mostrar {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: fadeOutUp 1.5s forwards 1.2s; /* Desaparece depois de 1.2s */
+}
+
+@keyframes fadeOutUp {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(1);
+    }
+}
+
+.cor-3-pontos { color: #2ecc71; text-shadow: 0 0 30px #2ecc71, 0 0 60px #2ecc71; }
+.cor-2-pontos { color: #f1c40f; text-shadow: 0 0 30px #f1c40f, 0 0 60px #f1c40f; }
+.cor-1-ponto { color: #e74c3c; text-shadow: 0 0 30px #e74c3c, 0 0 60px #e74c3c; }
+.cor-0-pontos { color: #95a5a6; text-shadow: 0 0 30px #95a5a6, 0 0 60px #95a5a6; font-size: 80px; }
+
+@keyframes pulsarBorda {
+    0% { border-color: #07f1b7; box-shadow: 0 0 5px #07f1b7; }
+    50% { border-color: #ffffff; box-shadow: 0 0 20px #07f1b7; }
+    100% { border-color: #07f1b7; box-shadow: 0 0 5px #07f1b7; }
+}
+
+.roda.girando {
+    animation: pulsarBorda 0.5s ease-in-out infinite;
+}

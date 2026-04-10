@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mímica | Party Games</title>
+
+    <link rel="stylesheet" href="../../../assets/css/global.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ========== TELA 1: SETUP ========== -->
+    <section id="tela-setup" class="tela ativa">
+        <div class="setup-container">
+            <h1 class="titulo-jogo">🎭 Mímica</h1>
+            <p class="subtitulo">Quantas equipes vão participar?</p>
+
+            <div class="setup-input-group">
+                <button id="btn-minus" class="btn-stepper">−</button>
+                <span id="num-equipes" class="num-display">2</span>
+                <button id="btn-plus" class="btn-stepper">+</button>
+            </div>
+
+            <button id="btn-iniciar" class="btn-primario">Iniciar Jogo</button>
+
+            <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar ao Menu</a>
+        </div>
+    </section>
+
+    <!-- ========== TELA 2: JOGO ========== -->
+    <section id="tela-jogo" class="tela">
+
+        <!-- Botão Voltar -->
+        <div class="jogo-topo">
+            <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar</a>
+        </div>
+
+        <!-- Área principal: Tabuleiro + Painel lateral -->
+        <div class="jogo-layout">
+
+            <!-- Tabuleiro -->
+            <div class="tabuleiro-wrapper">
+                <div id="tabuleiro" class="tabuleiro">
+                    <!-- Casas geradas pelo JS -->
+                </div>
+            </div>
+
+            <!-- Painel lateral (equipes + rodada) -->
+            <div class="painel-lateral">
+
+                <!-- Cards das equipes -->
+                <div id="equipes-container" class="equipes-container">
+                    <!-- Equipes geradas pelo JS -->
+                </div>
+
+                <!-- Card da rodada -->
+                <div class="rodada-card" id="rodada-card">
+                    <span class="rodada-label">Categoria</span>
+                    <h3 id="categoria-texto" class="categoria-valor">—</h3>
+
+                    <div class="palavra-container" id="palavra-container">
+                        <span class="palavra-label">Palavra</span>
+                        <h2 id="palavra-texto" class="palavra-valor">—</h2>
+                    </div>
+
+                    <!-- Timer -->
+                    <div class="timer-container" id="timer-container" style="display:none;">
+                        <div class="timer-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                                <circle class="timer-progress" id="timer-progress" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <span class="timer-text" id="timer-text">60</span>
+                        </div>
+                    </div>
+
+                    <!-- Botões de ação -->
+                    <div class="rodada-botoes" id="rodada-botoes">
+                        <button id="btn-ok" class="btn-primario">OK — Começar Timer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Legenda inferior -->
+        <footer class="legenda-footer">
+            <div class="legenda-item">
+                <span class="legenda-casa legenda-normal"></span>
+                <span>Normal</span>
+            </div>
+            <div class="legenda-item">
+                <span class="legenda-casa legenda-hard"></span>
+                <span>Hard! — Todas as categorias</span>
+            </div>
+            <div class="legenda-item">
+                <span class="legenda-casa legenda-all"></span>
+                <span>All! — Todas as equipes podem pontuar</span>
+            </div>
+            <div class="legenda-item">
+                <span class="legenda-casa legenda-start"></span>
+                <span>Início</span>
+            </div>
+            <div class="legenda-item">
+                <span class="legenda-casa legenda-finish"></span>
+                <span>Chegada 🏁</span>
+            </div>
+        </footer>
+
+    </section>
+
+    <!-- ========== MODAL: Seleção de Equipe (para rodada All!) ========== -->
+    <div id="modal-equipe" class="modal-overlay">
+        <div class="modal-card">
+            <h3 class="modal-titulo">Qual equipe adivinhou?</h3>
+            <div id="modal-equipes" class="modal-jogadores">
+                <!-- Botões das equipes -->
+            </div>
+            <button id="modal-cancelar" class="btn-cancelar">Ninguém acertou</button>
+        </div>
+    </div>
+
+    <!-- ========== MODAL: Fim de Jogo ========== -->
+    <div id="modal-fim" class="modal-overlay">
+        <div class="modal-card modal-fim-card">
+            <div id="fim-icone" class="fim-icone">🏆</div>
+            <h3 id="fim-titulo" class="modal-titulo">Fim do Jogo!</h3>
+            <p id="fim-mensagem" class="fim-mensagem"></p>
+            <button id="btn-novo-jogo" class="btn-primario">Novo Jogo</button>
+        </div>
+    </div>
+
+    <!-- ========== Mensagem flutuante ========== -->
+    <div id="mensagem-pontos" class="mensagem-pontos"></div>
+
+    <script src="../../../assets/js/app.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

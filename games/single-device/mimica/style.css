@@ -1,0 +1,868 @@
+/* =========================================
+   MÍMICA — Estilos
+   ========================================= */
+
+/* --- Reset e Base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Telas (seções que alternam) --- */
+.tela {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.tela.ativa {
+    display: flex;
+}
+
+/* =========================================
+   TELA 1: SETUP
+   ========================================= */
+.setup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+    padding: 20px;
+}
+
+.titulo-jogo {
+    font-size: 2.4rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+}
+
+.subtitulo {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.setup-input-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-stepper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-secondary);
+    background: transparent;
+    color: var(--accent-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.btn-stepper:hover {
+    background: rgba(0, 229, 255, 0.15);
+    transform: scale(1.1);
+}
+
+.num-display {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+    min-width: 60px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+.link-voltar {
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   BOTÕES GLOBAIS  
+   ========================================= */
+.btn-primario {
+    background: linear-gradient(135deg, var(--accent-color), #e6295a);
+    color: white;
+    padding: 14px 36px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+}
+
+.btn-primario:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(255, 51, 102, 0.5);
+}
+
+.btn-cancelar {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 6px;
+}
+
+.btn-cancelar:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+}
+
+/* =========================================
+   TELA 2: JOGO — Layout
+   ========================================= */
+#tela-jogo {
+    justify-content: flex-start;
+    padding: 10px 16px 0;
+    gap: 0;
+    min-height: 100vh;
+}
+
+.jogo-topo {
+    width: 100%;
+    padding: 4px 10px 8px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.jogo-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    flex: 1;
+    min-height: 0;
+    padding: 0 4px;
+}
+
+/* =========================================
+   TABULEIRO
+   ========================================= */
+.tabuleiro-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: auto;
+}
+
+.tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.casa {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: var(--card-bg);
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    min-height: 56px;
+}
+
+.casa .casa-num {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.25);
+    position: absolute;
+    top: 3px;
+    left: 5px;
+}
+
+.casa.casa-start {
+    background: linear-gradient(135deg, #2a2a35, #353542);
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+}
+
+.casa.casa-start::after {
+    content: '🚀';
+    font-size: 1.1rem;
+}
+
+.casa.casa-finish {
+    background: linear-gradient(135deg, #2a2a35, #353542);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
+}
+
+.casa.casa-finish::after {
+    content: '🏁';
+    font-size: 1.1rem;
+}
+
+.casa.casa-hard {
+    background: linear-gradient(135deg, rgba(241, 196, 15, 0.12), rgba(241, 196, 15, 0.05));
+    border-color: rgba(241, 196, 15, 0.35);
+}
+
+.casa.casa-hard::after {
+    content: 'Hard!';
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #f1c40f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.casa.casa-all {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.12), rgba(46, 204, 113, 0.05));
+    border-color: rgba(46, 204, 113, 0.35);
+}
+
+.casa.casa-all::after {
+    content: 'All!';
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #2ecc71;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Ícones das equipes no tabuleiro */
+.casa-icones {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2px;
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.icone-tabuleiro {
+    font-size: 0.9rem;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: iconePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes iconePop {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   PAINEL LATERAL
+   ========================================= */
+.painel-lateral {
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+}
+
+/* --- Cards das Equipes --- */
+.equipes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.equipe-card {
+    background: var(--card-bg);
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0.55;
+    transform: scale(0.97);
+}
+
+.equipe-card.ativa {
+    opacity: 1;
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+    transform: scale(1);
+}
+
+.equipe-icone {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.equipe-info {
+    flex: 1;
+}
+
+.equipe-nome {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.equipe-posicao {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.equipe-pontos {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+/* =========================================
+   CARD DE RODADA
+   ========================================= */
+.rodada-card {
+    background: var(--card-bg);
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.rodada-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.categoria-valor {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    padding: 6px 18px;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 20px;
+}
+
+.palavra-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.palavra-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.palavra-valor {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-shadow: 0 0 20px rgba(255, 51, 102, 0.25);
+    letter-spacing: 1px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    transition: all 0.35s ease;
+}
+
+.palavra-valor.oculta {
+    color: transparent;
+    text-shadow: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 0 20px;
+    user-select: none;
+}
+
+/* Badge de tipo de rodada */
+.rodada-tipo-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-hard {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.3);
+}
+
+.badge-all {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* =========================================
+   TIMER
+   ========================================= */
+.timer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-ring {
+    width: 90px;
+    height: 90px;
+    position: relative;
+}
+
+.timer-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.timer-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 6;
+}
+
+.timer-progress {
+    fill: none;
+    stroke: var(--accent-secondary);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear, stroke 0.5s ease;
+}
+
+.timer-progress.warning {
+    stroke: #f1c40f;
+}
+
+.timer-progress.danger {
+    stroke: #ff4757;
+}
+
+.timer-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text-color);
+}
+
+/* =========================================
+   BOTÕES DE RODADA
+   ========================================= */
+.rodada-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-acertou {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    width: 100%;
+}
+
+.btn-acertou:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(46, 204, 113, 0.5);
+}
+
+.btn-acertou:active {
+    transform: scale(0.98);
+}
+
+.btn-pular {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-pular:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+}
+
+/* =========================================
+   DADO (Animação de rolar)
+   ========================================= */
+.dado-resultado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.dado-numero {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    animation: dadoPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dado-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+@keyframes dadoPop {
+    from {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   LEGENDA (FOOTER)
+   ========================================= */
+.legenda-footer {
+    width: 100%;
+    padding: 12px 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.legenda-casa {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.legenda-normal {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legenda-hard {
+    background: linear-gradient(135deg, rgba(241, 196, 15, 0.12), rgba(241, 196, 15, 0.05));
+    border: 1px solid rgba(241, 196, 15, 0.35);
+}
+
+.legenda-all {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.12), rgba(46, 204, 113, 0.05));
+    border: 1px solid rgba(46, 204, 113, 0.35);
+}
+
+.legenda-start {
+    background: linear-gradient(135deg, #2a2a35, #353542);
+    border: 1px solid var(--accent-secondary);
+}
+
+.legenda-finish {
+    background: linear-gradient(135deg, #2a2a35, #353542);
+    border: 1px solid var(--accent-color);
+}
+
+/* =========================================
+   MODAIS
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal-overlay.ativo {
+    display: flex;
+}
+
+.modal-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 28px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 460px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-titulo {
+    font-size: 1.3rem;
+    color: var(--text-color);
+}
+
+.modal-jogadores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-jogador-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 110px;
+}
+
+.modal-jogador-btn:hover {
+    border-color: var(--accent-secondary);
+    background: rgba(0, 229, 255, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+/* Modal Fim de Jogo */
+.modal-fim-card {
+    gap: 12px;
+}
+
+.fim-icone {
+    font-size: 3.5rem;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.fim-mensagem {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* =========================================
+   MENSAGEM FLUTUANTE DE PONTOS
+   ========================================= */
+.mensagem-pontos {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    font-size: 4rem;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 0 0 30px currentColor;
+}
+
+.mensagem-pontos.mostrar {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.mensagem-pontos.positivo {
+    color: #2ecc71;
+}
+
+.mensagem-pontos.negativo {
+    color: #ff4757;
+}
+
+/* =========================================
+   ANIMAÇÕES EXTRAS
+   ========================================= */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5); }
+    100% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
+}
+
+.pulse-acerto {
+    animation: pulse-green 0.6s ease;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+    }
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 820px) {
+    .jogo-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .painel-lateral {
+        width: 100%;
+        max-height: none;
+    }
+
+    .tabuleiro-wrapper {
+        max-height: 340px;
+    }
+
+    .tabuleiro {
+        max-width: 380px;
+    }
+
+    .equipes-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .equipe-card {
+        flex: 1;
+        min-width: 140px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabuleiro {
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 320px;
+    }
+
+    .casa {
+        min-height: 48px;
+    }
+
+    .equipe-card {
+        padding: 8px 12px;
+    }
+
+    .rodada-card {
+        padding: 14px;
+    }
+
+    .palavra-valor {
+        font-size: 1.4rem;
+    }
+
+    .legenda-footer {
+        gap: 12px;
+        padding: 10px 12px;
+    }
+}

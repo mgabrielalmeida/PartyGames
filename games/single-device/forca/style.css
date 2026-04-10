@@ -1,0 +1,661 @@
+/* =========================================
+   JOGO DA FORCA — Estilos
+   ========================================= */
+
+/* --- Reset e Base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- Telas (seções que alternam) --- */
+.tela {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.tela.ativa {
+    display: flex;
+}
+
+/* =========================================
+   TELA 1: SETUP
+   ========================================= */
+.setup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+    padding: 20px;
+}
+
+.titulo-jogo {
+    font-size: 2.4rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+}
+
+.subtitulo {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.setup-input-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-stepper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-secondary);
+    background: transparent;
+    color: var(--accent-secondary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.btn-stepper:hover {
+    background: rgba(0, 229, 255, 0.15);
+    transform: scale(1.1);
+}
+
+.num-display {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+    min-width: 60px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+.link-voltar {
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+/* =========================================
+   TELA 2: MESTRE
+   ========================================= */
+.mestre-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+    max-width: 500px;
+}
+
+.mestre-aviso {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.mestre-destaque {
+    font-size: 2rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+}
+
+.contexto-card {
+    background: var(--card-bg);
+    border: 2px solid var(--accent-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.contexto-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contexto-valor {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+.input-palavra-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-palavra-group label {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.input-palavra {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-palavra:focus {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+
+.erro-msg {
+    color: #ff4757;
+    font-size: 0.9rem;
+    min-height: 20px;
+}
+
+/* =========================================
+   BOTÕES GLOBAIS  
+   ========================================= */
+.btn-primario {
+    background: linear-gradient(135deg, var(--accent-color), #e6295a);
+    color: white;
+    padding: 14px 36px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+}
+
+.btn-primario:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(255, 51, 102, 0.5);
+}
+
+.btn-cancelar {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 6px;
+}
+
+.btn-cancelar:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+}
+
+/* =========================================
+   TELA 3: JOGO
+   ========================================= */
+#tela-jogo {
+    justify-content: flex-start;
+    padding: 10px 16px 10px;
+    gap: 0;
+}
+
+/* --- Header do Jogo --- */
+.jogo-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.jogo-info-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.jogo-info-container .back-btn {
+    margin: 0;
+    justify-self: start;
+}
+
+.jogo-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.jogo-contexto-badge,
+.jogo-mestre-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.jogo-contexto-badge {
+    background: rgba(0, 229, 255, 0.15);
+    color: var(--accent-secondary);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.jogo-mestre-badge {
+    background: rgba(255, 51, 102, 0.15);
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 51, 102, 0.3);
+}
+
+/* --- Placar horizontal --- */
+.placar-container {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0;
+    max-width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.placar-jogador {
+    background: var(--card-bg);
+    padding: 5px 14px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    min-width: 80px;
+}
+
+.placar-jogador .pj-nome {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.placar-jogador .pj-pontos {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+}
+
+.placar-jogador.mestre {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.25);
+}
+
+.placar-jogador.mestre .pj-nome {
+    color: var(--accent-color);
+}
+
+/* --- Área principal do jogo --- */
+.jogo-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex: 1;
+    width: 100%;
+    max-width: 800px;
+    min-height: 0;
+    padding: 6px 0;
+}
+
+/* --- Forca (Canvas) --- */
+.forca-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+#forca-canvas {
+    width: 160px;
+    height: 210px;
+}
+
+.erros-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.erros-label span {
+    color: #ff4757;
+    font-weight: 700;
+}
+
+/* --- Palavra oculta --- */
+.palavra-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.palavra-display {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 10px;
+}
+
+.letra-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 36px;
+    height: 50px;
+}
+
+.letra-slot .letra-char {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-color);
+    height: 38px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.letra-slot .letra-char.revelada {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letra-slot .letra-line {
+    width: 100%;
+    height: 3px;
+    background: var(--accent-secondary);
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+.letra-slot.espaco {
+    width: 18px;
+}
+
+.letra-slot.espaco .letra-line {
+    background: transparent;
+}
+
+/* --- Teclado A-Z --- */
+.teclado {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 5px;
+    width: 100%;
+    max-width: 520px;
+    flex-shrink: 0;
+    padding: 0 8px;
+}
+
+.tecla {
+    padding: 10px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.tecla:hover:not(.usada) {
+    border-color: var(--accent-secondary);
+    background: rgba(0, 229, 255, 0.1);
+    transform: scale(1.08);
+}
+
+.tecla.correta {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    pointer-events: none;
+}
+
+.tecla.errada {
+    border-color: rgba(255, 71, 87, 0.3);
+    background: rgba(255, 71, 87, 0.1);
+    color: rgba(255, 71, 87, 0.4);
+    pointer-events: none;
+}
+
+/* --- Botão Adivinhar --- */
+.adivinhar-area {
+    flex-shrink: 0;
+    padding: 8px 0 6px;
+}
+
+.btn-adivinhar {
+    background: transparent;
+    color: var(--accent-secondary);
+    padding: 10px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 2px solid var(--accent-secondary);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-adivinhar:hover {
+    background: rgba(0, 229, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* =========================================
+   MODAIS
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal-overlay.ativo {
+    display: flex;
+}
+
+.modal-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 28px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 460px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-titulo {
+    font-size: 1.3rem;
+    color: var(--text-color);
+}
+
+.modal-jogadores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-jogador-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 110px;
+}
+
+.modal-jogador-btn:hover {
+    border-color: var(--accent-secondary);
+    background: rgba(0, 229, 255, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+/* --- Modal Fim de Rodada --- */
+.modal-fim-card {
+    gap: 12px;
+}
+
+.fim-icone {
+    font-size: 3.5rem;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.fim-mensagem {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.fim-palavra {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-secondary);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   MENSAGEM FLUTUANTE DE PONTOS
+   ========================================= */
+.mensagem-pontos {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    font-size: 4rem;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 0 0 30px currentColor;
+}
+
+.mensagem-pontos.mostrar {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.mensagem-pontos.positivo {
+    color: #2ecc71;
+}
+
+.mensagem-pontos.negativo {
+    color: #ff4757;
+}
+
+.mensagem-pontos.mestre-venceu {
+    color: #f1c40f;
+}
+
+/* =========================================
+   ANIMAÇÕES EXTRAS
+   ========================================= */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5); }
+    100% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
+}
+
+.pulse-acerto {
+    animation: pulse-green 0.6s ease;
+}

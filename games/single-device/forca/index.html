@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Forca</title>
+
+    <link rel="stylesheet" href="../../../assets/css/global.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ========== TELA 1: SETUP ========== -->
+    <section id="tela-setup" class="tela ativa">
+        <div class="setup-container">
+            <h1 class="titulo-jogo">🔤 Jogo da Forca</h1>
+            <p class="subtitulo">Quantos jogadores vão participar?</p>
+
+            <div class="setup-input-group">
+                <button id="btn-minus" class="btn-stepper">−</button>
+                <span id="num-jogadores" class="num-display">3</span>
+                <button id="btn-plus" class="btn-stepper">+</button>
+            </div>
+
+            <button id="btn-iniciar" class="btn-primario">Iniciar Jogo</button>
+
+            <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar ao Menu</a>
+        </div>
+    </section>
+
+    <!-- ========== TELA 2: MESTRE ========== -->
+    <section id="tela-mestre" class="tela">
+        
+        <!-- Botão Voltar -->
+        <div style="width: 100%; position: absolute; top: 10px; left: 20px;">
+            <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar</a>
+        </div>
+
+        <div class="mestre-container">
+            <p class="mestre-aviso">📱 Passe o celular para:</p>
+            <h2 id="mestre-nome" class="mestre-destaque">Jogador 1</h2>
+
+            <div class="contexto-card">
+                <span class="contexto-label">Contexto da rodada</span>
+                <h3 id="contexto-texto" class="contexto-valor">Filmes</h3>
+            </div>
+
+            <div class="input-palavra-group">
+                <label for="input-palavra">Digite a palavra secreta:</label>
+                <input type="text" id="input-palavra" class="input-palavra" maxlength="20"
+                    placeholder="Apenas letras e espaços..." autocomplete="off" spellcheck="false">
+                <p id="erro-palavra" class="erro-msg"></p>
+            </div>
+
+            <button id="btn-confirmar-palavra" class="btn-primario">Confirmar Palavra</button>
+        </div>
+    </section>
+
+    <!-- ========== TELA 3: JOGO ========== -->
+    <section id="tela-jogo" class="tela">
+
+        <!-- Barra superior com placar -->
+        <header class="jogo-header">
+            <!-- Botão Voltar e Infos da Rodada -->
+            <div class="jogo-info-container">
+                <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar</a>
+                <div class="jogo-info">
+                    <span class="jogo-contexto-badge" id="jogo-contexto-badge">Filmes</span>
+                    <span class="jogo-mestre-badge" id="jogo-mestre-badge">Mestre: Jogador 1</span>
+                </div>
+                <div></div> <!-- spacer -->
+            </div>
+            <div class="placar-container" id="placar-container">
+                <!-- Jogadores inseridos dinamicamente -->
+            </div>
+        </header>
+
+        <!-- Área principal do jogo -->
+        <main class="jogo-main">
+
+            <!-- Forca (Canvas) -->
+            <div class="forca-area">
+                <canvas id="forca-canvas" width="200" height="260"></canvas>
+                <p class="erros-label">Erros: <span id="erros-count">0</span>/6</p>
+            </div>
+
+            <!-- Palavra oculta -->
+            <div class="palavra-area">
+                <div id="palavra-display" class="palavra-display">
+                    <!-- Letras geradas pelo JS -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Teclado A-Z -->
+        <div id="teclado" class="teclado">
+            <!-- Teclas geradas pelo JS -->
+        </div>
+
+        <!-- Botão adivinhar palavra -->
+        <div class="adivinhar-area">
+            <button id="btn-adivinhar" class="btn-adivinhar">💡 Adivinhar Palavra</button>
+        </div>
+
+    </section>
+
+    <!-- ========== MODAL: Selecionar Jogador ========== -->
+    <div id="modal-jogador" class="modal-overlay">
+        <div class="modal-card">
+            <h3 class="modal-titulo" id="modal-titulo">Quem palpitou?</h3>
+            <div id="modal-jogadores" class="modal-jogadores">
+                <!-- Botões dos jogadores -->
+            </div>
+            <button id="modal-cancelar" class="btn-cancelar">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- ========== MODAL: Adivinhar Palavra ========== -->
+    <div id="modal-adivinhar" class="modal-overlay">
+        <div class="modal-card">
+            <h3 class="modal-titulo">Adivinhar Palavra</h3>
+            <input type="text" id="input-adivinhar" class="input-palavra" maxlength="20"
+                placeholder="Digite o palpite..." autocomplete="off" spellcheck="false">
+            <p id="erro-adivinhar" class="erro-msg"></p>
+            <button id="btn-confirmar-adivinhar" class="btn-primario">Confirmar</button>
+            <button id="btn-cancelar-adivinhar" class="btn-cancelar">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- ========== MODAL: Fim de Rodada ========== -->
+    <div id="modal-fim" class="modal-overlay">
+        <div class="modal-card modal-fim-card">
+            <div id="fim-icone" class="fim-icone">🎉</div>
+            <h3 id="fim-titulo" class="modal-titulo">Fim da Rodada!</h3>
+            <p id="fim-mensagem" class="fim-mensagem"></p>
+            <p id="fim-palavra" class="fim-palavra"></p>
+            <button id="btn-proxima-rodada" class="btn-primario">Próxima Rodada</button>
+        </div>
+    </div>
+
+    <!-- ========== Mensagem flutuante de pontos ========== -->
+    <div id="mensagem-pontos" class="mensagem-pontos"></div>
+
+    <script src="../../../assets/js/app.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

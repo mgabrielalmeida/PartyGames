@@ -38,25 +38,25 @@
             <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar</a>
         </div>
 
-        <!-- Área principal: Tabuleiro + Painel lateral -->
+        <!-- Área principal: Equipes + Tabuleiro + Rodada -->
         <div class="jogo-layout">
 
-            <!-- Tabuleiro -->
+            <!-- Painel esquerdo (equipes) -->
+            <div class="painel-esquerdo">
+                <div id="equipes-container" class="equipes-container">
+                    <!-- Equipes geradas pelo JS -->
+                </div>
+            </div>
+
+            <!-- Tabuleiro (centro) -->
             <div class="tabuleiro-wrapper">
                 <div id="tabuleiro" class="tabuleiro">
                     <!-- Casas geradas pelo JS -->
                 </div>
             </div>
 
-            <!-- Painel lateral (equipes + rodada) -->
-            <div class="painel-lateral">
-
-                <!-- Cards das equipes -->
-                <div id="equipes-container" class="equipes-container">
-                    <!-- Equipes geradas pelo JS -->
-                </div>
-
-                <!-- Card da rodada -->
+            <!-- Painel direito (rodada) -->
+            <div class="painel-direito">
                 <div class="rodada-card" id="rodada-card">
                     <span class="rodada-label">Categoria</span>
                     <h3 id="categoria-texto" class="categoria-valor">—</h3>
@@ -82,8 +82,8 @@
                         <button id="btn-ok" class="btn-primario">OK — Começar Timer</button>
                     </div>
                 </div>
-
             </div>
+
         </div>
 
         <!-- Legenda inferior -->
@@ -106,7 +106,7 @@
             </div>
             <div class="legenda-item">
                 <span class="legenda-casa legenda-finish"></span>
-                <span>Chegada 🏁</span>
+                <span>Chegada</span>
             </div>
         </footer>
 

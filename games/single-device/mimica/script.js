@@ -10,7 +10,7 @@ const CIRCUNFERENCIA_TIMER = 2 * Math.PI * 45; // 283
 const ICONES_EQUIPES = ['🔴', '🔵', '🟢', '🟡'];
 
 const CASAS_HARD = [7, 15, 23];   // Casas que são "Hard!" (índice 0-based)
-const CASAS_ALL  = [5, 13, 21];   // Casas que são "All!"
+const CASAS_ALL = [5, 13, 21];   // Casas que são "All!"
 
 // --- CATEGORIAS E PALAVRAS ---
 const CATEGORIAS = {
@@ -185,11 +185,34 @@ DOM.btnIniciar.addEventListener('click', () => {
     montarEquipes();
     mostrarTela(DOM.telaJogo);
 
-    // Inicia a primeira rodada após a transição
+    // Mostrar estado inicial: sem palavra, com botão "Iniciar"
     setTimeout(() => {
-        iniciarRodada();
+        mostrarTelaInicialRodada();
     }, 500);
 });
+
+/** Mostra o card de rodada com um botão "Iniciar" antes da primeira rodada */
+function mostrarTelaInicialRodada() {
+    DOM.categoriaTexto.textContent = '—';
+    DOM.palavraTexto.textContent = '—';
+    DOM.palavraTexto.classList.remove('oculta');
+    DOM.timerContainer.style.display = 'none';
+    pararTimer();
+
+    // Remover badges existentes
+    const existente = DOM.rodadaCard.querySelector('.rodada-tipo-badge');
+    if (existente) existente.remove();
+
+    DOM.rodadaBotoes.innerHTML = `
+        <button id="btn-iniciar-rodada" class="btn-primario">🎭 Iniciar</button>
+    `;
+    document.getElementById('btn-iniciar-rodada').addEventListener('click', () => {
+        iniciarRodada();
+    });
+
+    atualizarEquipes();
+    atualizarIconesTabuleiro();
+}
 
 // =========================================
 //  TABULEIRO
@@ -310,12 +333,7 @@ function iniciarRodada() {
     }
 
     // Sortear categoria
-    if (estado.tipoRodada === 'hard') {
-        // Hard: Sorteia de todas as categorias
-        estado.categoriaAtual = sortear(NOMES_CATEGORIAS);
-    } else {
-        estado.categoriaAtual = sortear(NOMES_CATEGORIAS);
-    }
+    estado.categoriaAtual = sortear(NOMES_CATEGORIAS);
 
     // Sortear palavra (evitando repetidas)
     let palavras = CATEGORIAS[estado.categoriaAtual];
@@ -329,7 +347,11 @@ function iniciarRodada() {
     estado.palavrasUsadas.add(estado.palavraAtual);
 
     // Atualizar UI
-    DOM.categoriaTexto.textContent = estado.categoriaAtual;
+    if (estado.tipoRodada === 'hard') {
+        DOM.categoriaTexto.textContent = 'Todas as categorias';
+    } else {
+        DOM.categoriaTexto.textContent = estado.categoriaAtual;
+    }
     DOM.palavraTexto.textContent = estado.palavraAtual;
     DOM.palavraTexto.classList.remove('oculta');
 

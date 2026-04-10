@@ -67,11 +67,34 @@ const DOM = {
     fimMensagem: document.getElementById('fim-mensagem'),
     btnNovoJogo: document.getElementById('btn-novo-jogo'),
 
+    // Manual Modal
+    btnManual: document.getElementById('btn-manual'),
+    modalManual: document.getElementById('modal-manual'),
+    btnFecharManual: document.getElementById('btn-fechar-manual'),
+
     // Mensagem flutuante
     mensagemFlutuante: document.getElementById('mensagem-flutuante'),
 };
 
 // --- UTILITÁRIOS ---
+// --- ÁUDIOS ---
+const somClick = new Audio('../../../assets/audio/click.mp3');
+somClick.volume = 0.5;
+const somCarta = new Audio('../../../assets/audio/pickup_card.wav');
+somCarta.volume = 0.5;
+
+function tocarAudio(audio) {
+    audio.currentTime = 0;
+    audio.play().catch(e => console.log('Áudio aguardando interação do usuário.'));
+}
+
+// Global click event to play sound on all buttons
+document.addEventListener('click', (e) => {
+    if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('button')) {
+        tocarAudio(somClick);
+    }
+});
+
 function mostrarTela(tela) {
     document.body.classList.remove('page-loaded');
     document.body.classList.add('page-exit');
@@ -201,9 +224,13 @@ function renderizarDealer(revelar = false) {
             DOM.dealerPontos.className = 'pontos-badge';
         }
     } else {
-        // Mostra apenas a carta visível
-        const cartaVisivel = cartas[0];
-        DOM.dealerPontos.textContent = VALOR_PONTOS[cartaVisivel.valor];
+        // Mostra apenas a carta visível, se houver
+        if (cartas.length > 0) {
+            const cartaVisivel = cartas[0];
+            DOM.dealerPontos.textContent = VALOR_PONTOS[cartaVisivel.valor];
+        } else {
+            DOM.dealerPontos.textContent = '—';
+        }
         DOM.dealerPontos.className = 'pontos-badge';
     }
 }
@@ -325,6 +352,14 @@ DOM.btnIniciar.addEventListener('click', () => {
     iniciarRodadaApostas();
 });
 
+DOM.btnManual.addEventListener('click', () => {
+    DOM.modalManual.classList.add('ativo');
+});
+
+DOM.btnFecharManual.addEventListener('click', () => {
+    DOM.modalManual.classList.remove('ativo');
+});
+
 // =========================================
 //  TELA 2: APOSTAS
 // =========================================
@@ -369,19 +404,22 @@ function renderizarApostas() {
             </div>
             <div class="aposta-input-group">
                 <button class="btn-stepper" data-jogador="${i}" data-dir="minus">−</button>
-                <span class="aposta-valor" id="aposta-val-${i}">${apostasTemp[i]}</span>
+                <input type="number" class="aposta-valor-input" id="aposta-val-${i}"
+                       value="${apostasTemp[i]}" min="${APOSTA_MIN}" max="${jogador.fichas}"
+                       data-jogador="${i}">
                 <button class="btn-stepper" data-jogador="${i}" data-dir="plus">+</button>
             </div>
         `;
         DOM.apostasJogadores.appendChild(card);
     });
 
-    // Event listeners para botões de aposta
+    // Event listeners para botões de aposta (+/- por APOSTA_STEP)
     DOM.apostasJogadores.querySelectorAll('.btn-stepper').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const idx = parseInt(e.target.dataset.jogador);
             const dir = e.target.dataset.dir;
             const jogador = estado.jogadores[idx];
+            const input = document.getElementById(`aposta-val-${idx}`);
 
             if (dir === 'plus') {
                 apostasTemp[idx] = Math.min(apostasTemp[idx] + APOSTA_STEP, jogador.fichas);
@@ -389,7 +427,42 @@ function renderizarApostas() {
                 apostasTemp[idx] = Math.max(apostasTemp[idx] - APOSTA_STEP, APOSTA_MIN);
             }
 
-            document.getElementById(`aposta-val-${idx}`).textContent = apostasTemp[idx];
+            input.value = apostasTemp[idx];
+        });
+    });
+
+    // Event listeners para inputs livres
+    DOM.apostasJogadores.querySelectorAll('.aposta-valor-input').forEach(input => {
+        // Atualizar ao digitar
+        input.addEventListener('input', (e) => {
+            const idx = parseInt(e.target.dataset.jogador);
+            const val = parseInt(e.target.value);
+            if (!isNaN(val)) {
+                apostasTemp[idx] = val;
+            }
+        });
+
+        // Validar e clampar ao sair do campo
+        input.addEventListener('blur', (e) => {
+            const idx = parseInt(e.target.dataset.jogador);
+            const jogador = estado.jogadores[idx];
+            let val = parseInt(e.target.value);
+
+            if (isNaN(val) || val < APOSTA_MIN) {
+                val = APOSTA_MIN;
+            } else if (val > jogador.fichas) {
+                val = jogador.fichas;
+            }
+
+            apostasTemp[idx] = val;
+            e.target.value = val;
+        });
+
+        // Confirmar com Enter
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.target.blur();
+            }
         });
     });
 }
@@ -412,8 +485,8 @@ DOM.btnConfirmarApostas.addEventListener('click', () => {
 //  RODADA DE JOGO
 // =========================================
 
-function iniciarRodada() {
-    estado.faseJogo = 'jogando';
+async function iniciarRodada() {
+    estado.faseJogo = 'distribuindo';
 
     // Configurar mãos dos jogadores
     estado.jogadores.forEach((jogador, i) => {
@@ -439,27 +512,61 @@ function iniciarRodada() {
     // Configurar dealer
     estado.dealer.cartas = [];
 
-    // Distribuir cartas: 2 para cada jogador, 2 para o dealer
-    estado.jogadores.forEach(jogador => {
-        if (jogador.maos[0].aposta > 0) {
-            jogador.maos[0].cartas.push(comprarCarta());
-            jogador.maos[0].cartas.push(comprarCarta());
-        }
-    });
-    estado.dealer.cartas.push(comprarCarta());
-    estado.dealer.cartas.push(comprarCarta());
-
     // Encontrar primeiro jogador ativo
-    estado.jogadorAtualIdx = encontrarProximoJogadorAtivo(-1);
+    estado.jogadorAtualIdx = -1;
 
     mostrarTela(DOM.telaJogo);
 
-    setTimeout(() => {
-        renderizarDealer(false);
+    // Aguardar a transição de tela
+    await delay(550);
+
+    DOM.acoesContainer.style.display = 'none';
+    DOM.statusTexto.textContent = 'Distribuindo cartas...';
+
+    // Renderizar estado inicial (sem cartas)
+    renderizarDealer(false);
+    renderizarJogadores();
+
+    // --- Animação de distribuição: como um dealer real ---
+    // Rodada 1: uma carta para cada jogador ativo
+    const jogadoresAtivos = estado.jogadores
+        .map((j, i) => ({ jogador: j, idx: i }))
+        .filter(({ jogador }) => jogador.maos[0].aposta > 0);
+
+    for (const { jogador } of jogadoresAtivos) {
+        jogador.maos[0].cartas.push(comprarCarta());
+        tocarAudio(somCarta);
         renderizarJogadores();
-        atualizarAcoes();
-        atualizarStatus();
-    }, 500);
+        await delay(350);
+    }
+
+    // Uma carta para o dealer (visível)
+    estado.dealer.cartas.push(comprarCarta());
+    tocarAudio(somCarta);
+    renderizarDealer(false);
+    await delay(350);
+
+    // Rodada 2: segunda carta para cada jogador ativo
+    for (const { jogador } of jogadoresAtivos) {
+        jogador.maos[0].cartas.push(comprarCarta());
+        tocarAudio(somCarta);
+        renderizarJogadores();
+        await delay(350);
+    }
+
+    // Segunda carta do dealer (oculta)
+    estado.dealer.cartas.push(comprarCarta());
+    tocarAudio(somCarta);
+    renderizarDealer(false);
+    await delay(400);
+
+    // --- Distribuição completa, iniciar fase de jogo ---
+    estado.faseJogo = 'jogando';
+    estado.jogadorAtualIdx = encontrarProximoJogadorAtivo(-1);
+
+    renderizarJogadores();
+    atualizarAcoes();
+    atualizarStatus();
 }
 
 function encontrarProximoJogadorAtivo(desdeIdx) {
@@ -568,6 +675,7 @@ function acaoHit() {
     const mao = jogador.maos[jogador.maoAtualIdx];
 
     mao.cartas.push(comprarCarta());
+    tocarAudio(somCarta);
     renderizarJogadores();
 
     const pts = calcularPontos(mao.cartas);
@@ -606,6 +714,7 @@ function acaoDouble() {
 
     // Receber apenas mais uma carta
     mao.cartas.push(comprarCarta());
+    tocarAudio(somCarta);
     mao.encerrada = true;
 
     const pts = calcularPontos(mao.cartas);
@@ -651,6 +760,7 @@ function acaoSplit() {
     jogador.maoAtualIdx = 0;
 
     mostrarMensagem('SPLIT! ✂️', 'ouro');
+    tocarAudio(somCarta);
     renderizarJogadores();
     atualizarStatus();
 
@@ -701,12 +811,14 @@ async function iniciarTurnoDealer() {
 
     // Revelar carta do dealer
     renderizarDealer(true);
+    tocarAudio(somCarta);
     await delay(800);
 
     if (!todosBust) {
         // Dealer compra cartas até >= 17
         while (calcularPontos(estado.dealer.cartas) < 17) {
             estado.dealer.cartas.push(comprarCarta());
+            tocarAudio(somCarta);
             renderizarDealer(true);
             await delay(600);
         }

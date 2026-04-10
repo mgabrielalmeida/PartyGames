@@ -213,13 +213,31 @@ body {
     font-size: 1.1rem;
 }
 
-.aposta-valor {
+.aposta-valor-input {
     font-size: 1.4rem;
     font-weight: 800;
     color: #ffd700;
     min-width: 60px;
+    max-width: 100px;
     text-align: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
     text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+    font-family: inherit;
+    -moz-appearance: textfield; /* Remove spinner do firefox */
+}
+
+.aposta-valor-input::-webkit-outer-spin-button,
+.aposta-valor-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.aposta-valor-input:focus {
+    outline: none;
+    border-color: rgba(255, 215, 0, 0.5);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* =========================================
@@ -234,9 +252,30 @@ body {
 
 .jogo-topo {
     width: 100%;
-    padding: 4px 10px 8px;
-    text-align: left;
+    padding: 10px 10px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-shrink: 0;
+}
+
+.btn-header {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-header:hover {
+    border-color: var(--accent-secondary);
+    color: var(--text-color);
+    background: rgba(0, 229, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
 }
 
 /* =========================================
@@ -660,6 +699,54 @@ body {
 
 .modal-titulo {
     font-size: 1.3rem;
+    color: var(--text-color);
+}
+
+/* Modal Manual */
+.modal-manual-card {
+    max-width: 650px;
+    align-items: stretch;
+    text-align: left;
+}
+
+.manual-conteudo {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.manual-secao h4 {
+    color: var(--accent-secondary);
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+}
+
+.manual-secao ul {
+    list-style-type: none;
+    padding-left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.manual-secao li {
+    position: relative;
+    padding-left: 16px;
+}
+
+.manual-secao li::before {
+    content: "•";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.manual-secao strong {
     color: var(--text-color);
 }
 

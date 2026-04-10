@@ -34,7 +34,7 @@
             </div>
 
             <button id="btn-iniciar" class="btn-primario">Iniciar Jogo</button>
-
+            
             <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar ao Menu</a>
         </div>
     </section>
@@ -56,6 +56,7 @@
         <!-- Botão Voltar -->
         <div class="jogo-topo">
             <a href="../../../single-device.html" class="back-btn link-voltar">← Voltar</a>
+            <button id="btn-manual" class="btn-header">📖 Regras</button>
         </div>
 
         <!-- Área do Dealer -->
@@ -88,6 +89,43 @@
         </div>
 
     </section>
+
+    <!-- ========== MODAL: Manual ========== -->
+    <div id="modal-manual" class="modal-overlay">
+        <div class="modal-card modal-manual-card">
+            <h3 class="modal-titulo">📖 Como Jogar Blackjack</h3>
+            <div class="manual-conteudo">
+                <p>O objetivo é somar uma mão com valor o mais próximo possível de 21 sem ultrapassar (bust), jogando contra o Dealer.</p>
+                <div class="manual-secao">
+                    <h4>🎴 Valor das Cartas</h4>
+                    <ul>
+                        <li><strong>Números (2-9):</strong> Valem seu próprio valor numérico.</li>
+                        <li><strong>Figuras (T, J, Q, K):</strong> Todas valem 10.</li>
+                        <li><strong>Ás (A):</strong> Vale 1 ou 11 (o que for mais vantajoso).</li>
+                    </ul>
+                </div>
+                <div class="manual-secao">
+                    <h4>🕹️ Opções de Jogada</h4>
+                    <ul>
+                        <li><strong>Hit 🃏:</strong> Pede mais uma carta. Pode ser repetido indefinidamente.</li>
+                        <li><strong>Stand ✋:</strong> Encerra sua vez com a mão atual.</li>
+                        <li><strong>Double 💰:</strong> Dobra sua aposta inicial recebendo apenas mais UMA carta, encerrando sua vez obrigatoriamente.</li>
+                        <li><strong>Split ✂️:</strong> Se suas duas primeiras cartas tiverem o mesmo valor, divida-as em duas mãos separadas (requer dobrar a aposta total). Jogue cada mão independentemente.</li>
+                    </ul>
+                </div>
+                <div class="manual-secao">
+                    <h4>💸 Pagamentos</h4>
+                    <ul>
+                        <li><strong>Vitória:</strong> 1:1 (recebe a aposta + o valor apostado).</li>
+                        <li><strong>Blackjack:</strong> Mão com valor exato de 21 em duas cartas. Paga 3:2.</li>
+                        <li><strong>Blackjack (Naipe Igual):</strong> Paga 2:1!</li>
+                        <li><strong>Push:</strong> Empate com o dealer, você não perde nem ganha.</li>
+                    </ul>
+                </div>
+            </div>
+            <button id="btn-fechar-manual" class="btn-primario">Entendi</button>
+        </div>
+    </div>
 
     <!-- ========== MODAL: Resultado da Rodada ========== -->
     <div id="modal-resultado" class="modal-overlay">

@@ -41,7 +41,46 @@ function init(io, roomManager) {
   io.on('connection', (socket) => {
 
     /* -----------------------------------------
-       votacao:createPoll — HOST cria uma pergunta
+       votacao:sync — Sincroniza estado inicial
+       ----------------------------------------- */
+    socket.on('votacao:sync', () => {
+      try {
+        const roomInfo = roomManager.getRoomBySocket(socket.id);
+        if (!roomInfo) return;
+        const room = roomManager.getRoomRaw(roomInfo.code);
+        if (!room || room.state !== 'IN_GAME' || room.gameId !== GAME_ID) return;
+
+        // Inicializar gameState se for a primeira vez
+        if (!room.gameState) {
+          room.gameState = {
+            phase: 'WAITING_QUESTION',
+            round: 0, // 0 significa que a 1ª rodada (round = 1) vai ser criada no createPoll
+            proposerIndex: 0,
+            question: null,
+            options: [],
+            votes: new Map(),
+            voteDeadline: null,
+            results: null
+          };
+        }
+
+        const playerIds = Array.from(room.players.keys());
+        const proposerId = playerIds[room.gameState.proposerIndex % playerIds.length];
+        const proposerPlayer = room.players.get(proposerId);
+
+        socket.emit('votacao:stateSynced', {
+          phase: room.gameState.phase,
+          round: room.gameState.round,
+          proposerId: proposerId,
+          proposerNickname: proposerPlayer ? proposerPlayer.nickname : 'Desconhecido'
+        });
+      } catch (error) {
+        socket.emit('room:error', { message: error.message });
+      }
+    });
+
+    /* -----------------------------------------
+       votacao:createPoll — Jogador da vez cria
        Payload: { question: string, options: string[] }
        ----------------------------------------- */
     socket.on('votacao:createPoll', (payload) => {
@@ -55,9 +94,17 @@ function init(io, roomManager) {
         const room = roomManager.getRoomRaw(roomInfo.code);
         if (!room) return;
 
-        // Verificar se é HOST
-        if (room.host !== socket.id) {
-          socket.emit('room:error', { message: 'Apenas o HOST pode criar perguntas.' });
+        // Verificar se é o propositor atual
+        if (!room.gameState) {
+          socket.emit('room:error', { message: 'Jogo não sincronizado.' });
+          return;
+        }
+
+        const playerIds = Array.from(room.players.keys());
+        const proposerId = playerIds[room.gameState.proposerIndex % playerIds.length];
+
+        if (socket.id !== proposerId) {
+          socket.emit('room:error', { message: 'Apenas o jogador da vez pode criar a pergunta.' });
           return;
         }
 
@@ -109,12 +156,13 @@ function init(io, roomManager) {
         }
 
         // Criar estado da rodada
-        const round = room.gameState ? room.gameState.round + 1 : 1;
+        const round = room.gameState.round + 1;
         const deadline = Date.now() + VOTE_TIMEOUT;
 
         room.gameState = {
           phase: 'VOTING',
           round,
+          proposerIndex: room.gameState.proposerIndex,
           question: question.replace(/[<>\"'&]/g, '').trim().substring(0, 200),
           options: sanitizedOptions,
           votes: new Map(),
@@ -244,6 +292,7 @@ function init(io, roomManager) {
         room.gameState = {
           phase: 'WAITING_QUESTION',
           round: room.gameState.round,
+          proposerIndex: room.gameState.proposerIndex + 1,
           question: null,
           options: [],
           votes: new Map(),
@@ -251,10 +300,16 @@ function init(io, roomManager) {
           results: null,
         };
 
+        const playerIds = Array.from(room.players.keys());
+        const newProposerId = playerIds[room.gameState.proposerIndex % playerIds.length];
+        const newProposerPlayer = room.players.get(newProposerId);
+
         room.lastActivity = Date.now();
 
         io.to(roomInfo.code).emit('votacao:nextRound', {
           round: room.gameState.round + 1,
+          proposerId: newProposerId,
+          proposerNickname: newProposerPlayer ? newProposerPlayer.nickname : 'Desconhecido'
         });
 
         console.log(`[Votação] Próxima rodada na sala ${roomInfo.code}`);

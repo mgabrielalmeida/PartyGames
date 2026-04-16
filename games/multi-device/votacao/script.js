@@ -47,6 +47,7 @@
   /* ─── ELEMENTOS — TELA ESPERA ────────── */
   const $waitRoundNum = document.getElementById('wait-round-num');
   const $waitRoomCode = document.getElementById('wait-room-code');
+  const $waitProposerName = document.getElementById('wait-proposer-name');
 
   /* ─── ESTADO ─────────────────────────── */
   let roomCode = sessionStorage.getItem('party_room_code') || '----';
@@ -264,7 +265,6 @@
 
   /* ─── SOCKET EVENTS ──────────────────── */
 
-  // Conectar ao servidor
   PartySocket.connect();
 
   // Quando conectado, entrar de volta na sala (via sessão)
@@ -276,10 +276,38 @@
     if (savedCode && savedNickname) {
       roomCode = savedCode;
       updateRoomCodes();
-      // Solicita ao servidor para reconectar este socket à sala e jogador antigos
+      // Solicita ao servidor para reconectar
       PartySocket.rejoinRoom(savedCode, savedNickname);
+      
+      // Quando reconectar, pedir o sync
+      setTimeout(() => {
+        PartySocket.emit('votacao:sync');
+      }, 500); // delay breve pra garantir
     }
   };
+
+  PartySocket.on('votacao:stateSynced', (data) => {
+    // Como sync pode ser chamado em refeshes, definimos a rotina
+    currentRound = data.round === 0 ? 1 : data.round;
+    updateRoundNums(currentRound);
+
+    const isMyTurn = data.proposerId === PartySocket.mySocketId;
+
+    if (data.phase === 'WAITING_QUESTION') {
+      if (isMyTurn) {
+        resetPollForm();
+        showScreen($createPoll);
+      } else {
+        if ($waitProposerName) {
+          $waitProposerName.textContent = `Aguardando ${escapeHtml(data.proposerNickname)} criar a próxima pergunta...`;
+        }
+        showScreen($waiting);
+      }
+    } else {
+      // Se tiver reconectado no meio da partida
+      showScreen($waiting);
+    }
+  });
 
   // ── Evento: Pergunta criada ──────────
   PartySocket.on('votacao:pollCreated', (data) => {
@@ -392,10 +420,15 @@
     updateRoundNums(data.round);
     hasVoted = false;
 
-    if (isHost) {
+    const isMyTurn = data.proposerId === PartySocket.mySocketId;
+
+    if (isMyTurn) {
       resetPollForm();
       showScreen($createPoll);
     } else {
+      if ($waitProposerName) {
+        $waitProposerName.textContent = `Aguardando ${escapeHtml(data.proposerNickname)} criar a próxima pergunta...`;
+      }
       showScreen($waiting);
     }
   });
@@ -449,12 +482,10 @@
     updateRoomCodes();
     updateRoundNums(1);
 
-    // Determinar tela inicial baseado no papel
-    if (isHost) {
-      resetPollForm();
-      showScreen($createPoll);
-    } else {
-      showScreen($waiting);
+    // Ocultar a tela inicial padronizada antes de receber o sync do server
+    showScreen($waiting);
+    if ($waitProposerName) {
+      $waitProposerName.textContent = "Sincronizando com a partida...";
     }
   }
 

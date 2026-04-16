@@ -1,0 +1,23 @@
+{
+  "name": "partygames-server",
+  "version": "1.0.0",
+  "description": "Servidor real-time para PartyGames — gerenciamento de salas e jogos multi-device via Socket.IO",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": ["party-games", "socket.io", "real-time", "multiplayer"],
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

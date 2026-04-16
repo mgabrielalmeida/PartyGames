@@ -1,0 +1,584 @@
+/* =========================================
+   multi-device.css — Estilos do Hub e Lobby
+   =========================================
+   Estende o tema global para as telas de
+   criação/entrada de sala e lobby de espera.
+   ========================================= */
+
+/* ─── VARIÁVEIS ADICIONAIS ─────────────── */
+:root {
+  --success-color: #2ecc71;
+  --warning-color: #f1c40f;
+  --danger-color: #e74c3c;
+  --glass-bg: rgba(42, 42, 53, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glow-accent: rgba(255, 51, 102, 0.3);
+  --glow-secondary: rgba(0, 229, 255, 0.3);
+}
+
+/* ─── LAYOUT DE TELAS ──────────────────── */
+.screen {
+  display: none;
+  animation: screenFadeIn 0.4s ease forwards;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-layout);
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes screenFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── TELA DO HUB (Criar/Entrar) ──────── */
+.hub-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.hub-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+}
+
+.hub-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hub-card h2 {
+  color: var(--accent-secondary);
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hub-card h2 .icon {
+  font-size: 1.5rem;
+}
+
+.hub-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* ─── FORMULÁRIOS ──────────────────────── */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 3px var(--glow-secondary);
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Input do código de sala — estilo especial */
+.code-input {
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  text-align: center;
+  font-size: 1.4rem !important;
+  font-weight: 700;
+  padding: 14px 16px !important;
+}
+
+/* ─── BOTÕES ───────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-color), #cc2952);
+  color: #fff;
+  box-shadow: 0 4px 15px var(--glow-accent);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 25px var(--glow-accent);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--accent-secondary), #00b8cc);
+  color: #1a1a24;
+  box-shadow: 0 4px 15px var(--glow-secondary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  box-shadow: 0 6px 25px var(--glow-secondary);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-color);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger-color), #c0392b);
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+}
+
+/* ─── TELA DO LOBBY ────────────────────── */
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+/* Código da sala em destaque */
+.room-code-display {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  text-align: center;
+}
+
+.room-code-display .label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.room-code-display .code {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 12px;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  user-select: all;
+}
+
+.room-code-display .hint {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* Lista de jogadores */
+.players-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+}
+
+.players-panel .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.players-panel .panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.players-panel .player-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.player-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  animation: playerSlideIn 0.3s ease forwards;
+}
+
+@keyframes playerSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.player-item.is-me {
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  background: rgba(0, 229, 255, 0.05);
+}
+
+.player-item.disconnected {
+  opacity: 0.4;
+}
+
+.player-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.player-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-nickname {
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-role {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.player-role.host {
+  color: var(--accent-color);
+}
+
+.player-role.player {
+  color: var(--text-muted);
+}
+
+.player-status {
+  font-size: 0.7rem;
+  color: var(--warning-color);
+}
+
+/* Seleção de jogo */
+.game-select-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 20px 24px;
+}
+
+.game-select-panel .panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+.game-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.game-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.game-option:hover {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.game-option.selected {
+  border-color: var(--accent-secondary);
+  background: rgba(0, 229, 255, 0.08);
+}
+
+.game-option.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.game-option .game-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.game-option .game-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.game-option .game-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Ações do lobby */
+.lobby-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Mensagem de espera para jogadores */
+.waiting-message {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.waiting-message .dots {
+  display: inline-block;
+  animation: dotPulse 1.4s infinite;
+}
+
+@keyframes dotPulse {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+/* ─── STATUS DE CONEXÃO ────────────────── */
+.connection-status {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 100;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.connection-status.connected {
+  background: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.connection-status.disconnected {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.connected .connection-dot {
+  background: var(--success-color);
+  box-shadow: 0 0 6px var(--success-color);
+  animation: dotGlow 2s ease-in-out infinite;
+}
+
+.disconnected .connection-dot {
+  background: var(--danger-color);
+}
+
+@keyframes dotGlow {
+  0%, 100% { box-shadow: 0 0 4px var(--success-color); }
+  50% { box-shadow: 0 0 10px var(--success-color); }
+}
+
+/* ─── TOAST / NOTIFICAÇÕES ─────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  backdrop-filter: blur(12px);
+  animation: toastIn 0.3s ease forwards;
+  pointer-events: auto;
+  text-align: center;
+  max-width: 380px;
+}
+
+.toast.error {
+  background: rgba(231, 76, 60, 0.9);
+}
+
+.toast.success {
+  background: rgba(46, 204, 113, 0.9);
+}
+
+.toast.info {
+  background: rgba(0, 229, 255, 0.85);
+  color: #1a1a24;
+}
+
+.toast.exit {
+  animation: toastOut 0.3s ease forwards;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(20px); }
+}
+
+/* ─── SEPARADOR ────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── RESPONSIVIDADE ───────────────────── */
+@media (max-width: 480px) {
+  .room-code-display .code {
+    font-size: 2.2rem;
+    letter-spacing: 8px;
+  }
+
+  .hub-card {
+    padding: 20px 18px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}

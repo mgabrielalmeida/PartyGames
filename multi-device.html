@@ -4,57 +4,453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-dispositivos | Meu Acervo</title>
+    <title>Multi-dispositivos | Acervo de Party Games</title>
+    <meta name="description" content="Crie ou entre em uma sala para jogar com amigos, cada um no seu dispositivo.">
+
     <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/multi-device.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    </style>
 </head>
 
 <body>
 
-    <header class="page-header">
-        <a href="index.html" class="back-btn">← Voltar ao Menu</a>
+    <!-- Indicador de conexão -->
+    <div id="connection-status" class="connection-status disconnected">
+        <span class="connection-dot"></span>
+        <span class="connection-text">Conectando...</span>
+    </div>
 
-        <h1>Multi-dispositivos</h1>
-        <p>Conecte-se na mesma sala, cada um no seu celular.</p>
-    </header>
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container"></div>
 
-    <main class="list-container">
+    <!-- ═══════════════════════════════════════
+         TELA 1: HUB — Criar ou Entrar em Sala
+         ═══════════════════════════════════════ -->
+    <section id="screen-hub" class="screen active">
 
-        <section class="game-grid">
+        <header class="page-header">
+            <a href="index.html" class="back-btn">← Voltar ao Menu</a>
+            <h1>Multi-dispositivos</h1>
+            <p>Conecte-se na mesma sala, cada um no seu celular.</p>
+        </header>
 
-            <a href="games/cartas-contra/index.html" class="game-card">
-                <div class="game-thumbnail">
-                    <span class="emoji-placeholder">🃏</span>
+        <main class="hub-container">
+
+            <!-- Card: Criar Sala -->
+            <div class="hub-card" id="card-create">
+                <h2><span class="icon">🚀</span> Criar Sala</h2>
+                <p>Crie uma nova sala e convide seus amigos com o código.</p>
+
+                <div class="form-group">
+                    <label for="create-nickname">Seu apelido</label>
+                    <input type="text" id="create-nickname" placeholder="Ex: João"
+                           maxlength="20" autocomplete="off" spellcheck="false">
                 </div>
-                <div class="game-details">
-                    <h3>Cartas na Mesa</h3>
-                    <p>Combine cartas para dar as respostas mais engraçadas.</p>
-                    <span class="badge">👥 3 a 10 jogadores</span>
-                    <span class="badge online-badge">🌐 Requer Internet</span>
+
+                <button id="btn-create" class="btn btn-primary" disabled>
+                    🎲 Criar Sala
+                </button>
+            </div>
+
+            <div class="divider">ou</div>
+
+            <!-- Card: Entrar em Sala -->
+            <div class="hub-card" id="card-join">
+                <h2><span class="icon">🔗</span> Entrar em Sala</h2>
+                <p>Digite o código de 4 letras que o anfitrião compartilhou.</p>
+
+                <div class="form-group">
+                    <label for="join-code">Código da sala</label>
+                    <input type="text" id="join-code" class="code-input"
+                           placeholder="ABCD" maxlength="4" autocomplete="off" spellcheck="false">
                 </div>
-            </a>
 
-            <a href="games/telefone-desenhado/index.html" class="game-card">
-                <div class="game-thumbnail">
-                    <span class="emoji-placeholder">🎨</span>
+                <div class="form-group">
+                    <label for="join-nickname">Seu apelido</label>
+                    <input type="text" id="join-nickname" placeholder="Ex: Maria"
+                           maxlength="20" autocomplete="off" spellcheck="false">
                 </div>
-                <div class="game-details">
-                    <h3>Telefone Desenhado</h3>
-                    <p>Desenhe e adivinhe em sequência. O caos é garantido!</p>
-                    <span class="badge">👥 4 a 8 jogadores</span>
-                    <span class="badge online-badge">🌐 Requer Internet</span>
+
+                <button id="btn-join" class="btn btn-secondary" disabled>
+                    🚪 Entrar na Sala
+                </button>
+            </div>
+
+        </main>
+
+        <footer class="site-footer">
+            <p>Acervo de Party Games</p>
+        </footer>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 2: LOBBY — Sala de Espera
+         ═══════════════════════════════════════ -->
+    <section id="screen-lobby" class="screen">
+
+        <header class="page-header">
+            <button id="btn-leave" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;">← Sair da Sala</button>
+            <h1>Sala de Espera</h1>
+        </header>
+
+        <main class="lobby-container">
+
+            <!-- Código da Sala -->
+            <div class="room-code-display">
+                <span class="label">Código da Sala</span>
+                <div class="code" id="lobby-room-code">----</div>
+                <span class="hint">Compartilhe este código com seus amigos!</span>
+            </div>
+
+            <!-- Lista de Jogadores -->
+            <div class="players-panel">
+                <div class="panel-header">
+                    <span class="panel-title">👥 Jogadores</span>
+                    <span class="player-count" id="lobby-player-count">0/10</span>
                 </div>
-            </a>
+                <ul class="player-list" id="lobby-player-list">
+                    <!-- Preenchido via JS -->
+                </ul>
+            </div>
 
-        </section>
+            <!-- Seleção de Jogo (apenas HOST vê os botões) -->
+            <div class="game-select-panel" id="game-select-panel">
+                <div class="panel-title">🎮 Selecione o Jogo</div>
+                <div class="game-options" id="game-options">
+                    <!-- Preenchido via JS -->
+                </div>
+            </div>
 
-    </main>
+            <!-- Ações do Lobby -->
+            <div class="lobby-actions">
+                <!-- Botão Iniciar (apenas HOST) -->
+                <button id="btn-start-game" class="btn btn-primary" style="display:none;" disabled>
+                    ⚡ Iniciar Jogo
+                </button>
 
-    <footer class="site-footer">
-        <p>Acervo de Party Games</p>
-    </footer>
+                <!-- Mensagem de espera (jogadores) -->
+                <div id="waiting-msg" class="waiting-message" style="display:none;">
+                    Aguardando o anfitrião iniciar o jogo<span class="dots">...</span>
+                </div>
+            </div>
 
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="src/client/socket-client.js"></script>
     <script src="assets/js/app.js"></script>
 
-</body>
+    <script>
+    /* =========================================
+       multi-device.html — Lógica de UI
+       ========================================= */
+    (function () {
+      'use strict';
 
+      /* ─── ELEMENTOS ─────────────────────── */
+      const $hub        = document.getElementById('screen-hub');
+      const $lobby      = document.getElementById('screen-lobby');
+
+      // Hub
+      const $createNick = document.getElementById('create-nickname');
+      const $btnCreate  = document.getElementById('btn-create');
+      const $joinCode   = document.getElementById('join-code');
+      const $joinNick   = document.getElementById('join-nickname');
+      const $btnJoin    = document.getElementById('btn-join');
+
+      // Lobby
+      const $roomCode    = document.getElementById('lobby-room-code');
+      const $playerCount = document.getElementById('lobby-player-count');
+      const $playerList  = document.getElementById('lobby-player-list');
+      const $gameOptions = document.getElementById('game-options');
+      const $gamePanel   = document.getElementById('game-select-panel');
+      const $btnStart    = document.getElementById('btn-start-game');
+      const $waitingMsg  = document.getElementById('waiting-msg');
+      const $btnLeave    = document.getElementById('btn-leave');
+
+      // Conexão
+      const $connStatus  = document.getElementById('connection-status');
+      const $connText    = $connStatus.querySelector('.connection-text');
+
+      /* ─── CATÁLOGO DE JOGOS ──────────────── */
+      const AVAILABLE_GAMES = [
+        {
+          id: 'votacao',
+          name: 'Votação Anônima',
+          emoji: '🗳️',
+          desc: 'Crie perguntas e vote anonimamente. Diversão garantida!',
+          minPlayers: 2,
+          maxPlayers: 20,
+          url: 'games/multi-device/votacao/index.html',
+        },
+        // Adicione novos jogos aqui seguindo o mesmo formato
+      ];
+
+      let selectedGameId = null;
+
+      /* ─── CORES DE AVATAR ────────────────── */
+      const AVATAR_COLORS = [
+        '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#1abc9c',
+        '#3498db', '#9b59b6', '#e84393', '#00cec9', '#6c5ce7',
+      ];
+
+      /* ─── TOAST ──────────────────────────── */
+      function showToast(message, type = 'info', duration = 3500) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add('exit');
+          setTimeout(() => toast.remove(), 300);
+        }, duration);
+      }
+
+      /* ─── NAVEGAÇÃO DE TELAS ─────────────── */
+      function showScreen(screen) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        screen.classList.add('active');
+      }
+
+      /* ─── VALIDAÇÃO DE INPUTS ────────────── */
+      function validateCreateForm() {
+        $btnCreate.disabled = $createNick.value.trim().length === 0;
+      }
+
+      function validateJoinForm() {
+        $btnJoin.disabled = $joinCode.value.trim().length !== 4 || $joinNick.value.trim().length === 0;
+      }
+
+      $createNick.addEventListener('input', validateCreateForm);
+      $joinCode.addEventListener('input', () => {
+        $joinCode.value = $joinCode.value.toUpperCase().replace(/[^A-Z]/g, '');
+        validateJoinForm();
+      });
+      $joinNick.addEventListener('input', validateJoinForm);
+
+      /* ─── AÇÕES DE HUB ──────────────────── */
+      $btnCreate.addEventListener('click', () => {
+        $btnCreate.disabled = true;
+        sessionStorage.setItem('party_nickname', $createNick.value.trim());
+        PartySocket.createRoom($createNick.value.trim());
+      });
+
+      $btnJoin.addEventListener('click', () => {
+        $btnJoin.disabled = true;
+        sessionStorage.setItem('party_nickname', $joinNick.value.trim());
+        PartySocket.joinRoom($joinCode.value.trim(), $joinNick.value.trim());
+      });
+
+      // Enter para submeter
+      $createNick.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !$btnCreate.disabled) $btnCreate.click();
+      });
+      $joinNick.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !$btnJoin.disabled) $btnJoin.click();
+      });
+      $joinCode.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && $joinCode.value.trim().length === 4) $joinNick.focus();
+      });
+
+      /* ─── AÇÕES DO LOBBY ─────────────────── */
+      $btnLeave.addEventListener('click', () => {
+        PartySocket.leaveRoom();
+      });
+
+      $btnStart.addEventListener('click', () => {
+        if (!selectedGameId) {
+          showToast('Selecione um jogo antes de iniciar!', 'error');
+          return;
+        }
+        $btnStart.disabled = true;
+        PartySocket.startGame();
+      });
+
+      /* ─── RENDERIZAÇÃO DO LOBBY ──────────── */
+      function renderLobby(room) {
+        if (!room) return;
+
+        // Código
+        $roomCode.textContent = room.code;
+
+        // Contagem
+        $playerCount.textContent = `${room.playerCount}/${room.maxPlayers}`;
+
+        // Lista de jogadores
+        $playerList.innerHTML = '';
+        room.players.forEach((player, index) => {
+          const li = document.createElement('li');
+          const isMe = player.id === PartySocket.mySocketId;
+          li.className = 'player-item' + (isMe ? ' is-me' : '') + (!player.connected ? ' disconnected' : '');
+
+          const color = AVATAR_COLORS[index % AVATAR_COLORS.length];
+          const initial = player.nickname.charAt(0).toUpperCase();
+
+          li.innerHTML = `
+            <div class="player-avatar" style="background:${color}">${initial}</div>
+            <div class="player-info">
+              <div class="player-nickname">${escapeHtml(player.nickname)}${isMe ? ' (você)' : ''}</div>
+              <div class="player-role ${player.role.toLowerCase()}">${player.role === 'HOST' ? '👑 Anfitrião' : 'Jogador'}</div>
+              ${!player.connected ? '<div class="player-status">Reconectando...</div>' : ''}
+            </div>
+          `;
+          $playerList.appendChild(li);
+        });
+
+        // Painel de seleção de jogo + ações
+        const amHost = PartySocket.isHost;
+
+        // Renderizar opções de jogo
+        renderGameOptions(amHost, room.gameId);
+
+        if (amHost) {
+          $btnStart.style.display = '';
+          $btnStart.disabled = !selectedGameId || room.playerCount < 2;
+          $waitingMsg.style.display = 'none';
+        } else {
+          $btnStart.style.display = 'none';
+          $waitingMsg.style.display = '';
+
+          if (room.gameId) {
+            const game = AVAILABLE_GAMES.find(g => g.id === room.gameId);
+            $waitingMsg.innerHTML = game
+              ? `Jogo selecionado: <strong>${game.emoji} ${game.name}</strong><br>Aguardando o anfitrião iniciar<span class="dots">...</span>`
+              : `Aguardando o anfitrião iniciar o jogo<span class="dots">...</span>`;
+          } else {
+            $waitingMsg.innerHTML = 'Aguardando o anfitrião selecionar um jogo<span class="dots">...</span>';
+          }
+        }
+      }
+
+      function renderGameOptions(isHost, currentGameId) {
+        $gameOptions.innerHTML = '';
+
+        AVAILABLE_GAMES.forEach(game => {
+          const div = document.createElement('div');
+          const isSelected = (selectedGameId === game.id) || (currentGameId === game.id);
+          div.className = 'game-option' + (isSelected ? ' selected' : '') + (!isHost ? ' disabled' : '');
+
+          div.innerHTML = `
+            <span class="game-icon">${game.emoji}</span>
+            <div>
+              <div class="game-name">${game.name}</div>
+              <div class="game-desc">${game.desc}</div>
+            </div>
+          `;
+
+          if (isHost) {
+            div.addEventListener('click', () => {
+              selectedGameId = game.id;
+              PartySocket.selectGame(game.id);
+              renderGameOptions(true, game.id);
+
+              // Habilitar botão de iniciar se tiver 2+ jogadores
+              const room = PartySocket.currentRoom;
+              $btnStart.disabled = !room || room.playerCount < 2;
+            });
+          }
+
+          $gameOptions.appendChild(div);
+        });
+
+        // Sincronizar selectedGameId com o servidor
+        if (currentGameId) {
+          selectedGameId = currentGameId;
+        }
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      /* ─── CALLBACKS DO SOCKET ────────────── */
+      PartySocket.callbacks.onConnected = () => {
+        $connStatus.className = 'connection-status connected';
+        $connText.textContent = 'Conectado';
+      };
+
+      PartySocket.callbacks.onDisconnected = () => {
+        $connStatus.className = 'connection-status disconnected';
+        $connText.textContent = 'Desconectado';
+      };
+
+      PartySocket.callbacks.onRoomCreated = (data) => {
+        showToast(`Sala ${data.code} criada!`, 'success');
+        selectedGameId = null;
+        renderLobby(data.room);
+        showScreen($lobby);
+      };
+
+      PartySocket.callbacks.onRoomJoined = (data) => {
+        showToast('Você entrou na sala!', 'success');
+        selectedGameId = data.room.gameId || null;
+        renderLobby(data.room);
+        showScreen($lobby);
+      };
+
+      PartySocket.callbacks.onRoomUpdated = (data) => {
+        renderLobby(data.room);
+      };
+
+      PartySocket.callbacks.onRoomStarted = (data) => {
+        // Redirecionar para a página do jogo
+        const game = AVAILABLE_GAMES.find(g => g.id === data.gameId);
+        if (game && game.url) {
+          // Salvar dados no sessionStorage para o jogo recuperar
+          sessionStorage.setItem('party_room_code', data.room.code);
+          sessionStorage.setItem('party_socket_id', PartySocket.mySocketId);
+          sessionStorage.setItem('party_is_host', PartySocket.isHost);
+          sessionStorage.setItem('party_game_id', data.gameId);
+          window.location.href = game.url;
+        } else {
+          showToast('Jogo não encontrado!', 'error');
+        }
+      };
+
+      PartySocket.callbacks.onRoomError = (data) => {
+        showToast(data.message, 'error');
+        // Re-habilitar botões
+        validateCreateForm();
+        validateJoinForm();
+        $btnStart.disabled = false;
+      };
+
+      PartySocket.callbacks.onHostChanged = (data) => {
+        showToast(`${data.newHostNickname} é o novo anfitrião!`, 'info');
+      };
+
+      PartySocket.callbacks.onRoomDissolved = () => {
+        showToast('A sala foi encerrada.', 'error');
+        selectedGameId = null;
+        showScreen($hub);
+      };
+
+      PartySocket.callbacks.onRoomLeft = () => {
+        selectedGameId = null;
+        showScreen($hub);
+        showToast('Você saiu da sala.', 'info');
+      };
+
+      /* ─── INICIALIZAR ───────────────────── */
+      PartySocket.connect();
+
+    })();
+    </script>
+
+</body>
 </html>

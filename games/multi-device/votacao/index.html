@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votação Anônima | Party Games</title>
+    <meta name="description" content="Crie perguntas e vote anonimamente com seus amigos!">
+
+    <link rel="stylesheet" href="../../../assets/css/global.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    </style>
+</head>
+
+<body>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════
+         TELA: HOST CRIA PERGUNTA
+         ═══════════════════════════════════════ -->
+    <section id="screen-create-poll" class="screen">
+        <header class="game-header">
+            <div class="game-header-top">
+                <button id="btn-end-game" class="btn-icon" title="Encerrar jogo">✕</button>
+                <div class="round-badge">Rodada <span id="create-round-num">1</span></div>
+                <div class="room-badge" id="create-room-code">----</div>
+            </div>
+            <h1>🗳️ Crie sua Pergunta</h1>
+            <p class="subtitle">Todos irão votar anonimamente.</p>
+        </header>
+
+        <main class="game-container">
+            <div class="poll-form">
+                <div class="form-group">
+                    <label for="poll-question">Pergunta</label>
+                    <input type="text" id="poll-question" placeholder="Ex: Quem mais provavelmente..."
+                           maxlength="200" autocomplete="off" spellcheck="false">
+                </div>
+
+                <div class="options-container" id="options-container">
+                    <label>Opções</label>
+                    <div class="option-input-row">
+                        <input type="text" class="option-input" placeholder="Opção 1" maxlength="100" autocomplete="off">
+                        <button class="btn-remove-option" disabled>✕</button>
+                    </div>
+                    <div class="option-input-row">
+                        <input type="text" class="option-input" placeholder="Opção 2" maxlength="100" autocomplete="off">
+                        <button class="btn-remove-option" disabled>✕</button>
+                    </div>
+                </div>
+
+                <button id="btn-add-option" class="btn btn-outline btn-sm">+ Adicionar Opção</button>
+
+                <button id="btn-send-poll" class="btn btn-primary" disabled>
+                    🚀 Publicar Pergunta
+                </button>
+            </div>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA: VOTAÇÃO (para todos)
+         ═══════════════════════════════════════ -->
+    <section id="screen-voting" class="screen">
+        <header class="game-header">
+            <div class="game-header-top">
+                <div class="round-badge">Rodada <span id="vote-round-num">1</span></div>
+                <div class="timer-badge" id="vote-timer">60s</div>
+                <div class="room-badge" id="vote-room-code">----</div>
+            </div>
+        </header>
+
+        <main class="game-container">
+            <div class="poll-question-display">
+                <div class="question-icon">🤔</div>
+                <h2 id="vote-question-text">Pergunta aqui</h2>
+            </div>
+
+            <div class="vote-options" id="vote-options">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <div class="vote-progress" id="vote-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="vote-progress-fill"></div>
+                </div>
+                <span class="progress-text" id="vote-progress-text">0/0 votaram</span>
+            </div>
+
+            <div id="vote-confirmed-msg" class="vote-confirmed" style="display:none;">
+                ✅ Voto registrado! Aguardando os demais...
+            </div>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA: RESULTADOS
+         ═══════════════════════════════════════ -->
+    <section id="screen-results" class="screen">
+        <header class="game-header">
+            <div class="game-header-top">
+                <div class="round-badge">Rodada <span id="results-round-num">1</span></div>
+                <div class="room-badge" id="results-room-code">----</div>
+            </div>
+            <h1>📊 Resultados</h1>
+        </header>
+
+        <main class="game-container">
+            <div class="results-question" id="results-question-text"></div>
+
+            <div class="results-bars" id="results-bars">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <div class="results-meta" id="results-meta"></div>
+
+            <!-- Ações do HOST -->
+            <div class="results-actions" id="results-actions" style="display:none;">
+                <button id="btn-next-round" class="btn btn-secondary">
+                    ➡️ Próxima Rodada
+                </button>
+                <button id="btn-end-game-results" class="btn btn-outline btn-sm">
+                    🏁 Encerrar Jogo
+                </button>
+            </div>
+
+            <!-- Mensagem para jogadores -->
+            <div id="results-waiting" class="waiting-text" style="display:none;">
+                Aguardando o anfitrião...
+            </div>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA: AGUARDANDO (jogadores, antes da pergunta)
+         ═══════════════════════════════════════ -->
+    <section id="screen-waiting" class="screen">
+        <header class="game-header">
+            <div class="game-header-top">
+                <div class="round-badge">Rodada <span id="wait-round-num">1</span></div>
+                <div class="room-badge" id="wait-room-code">----</div>
+            </div>
+        </header>
+
+        <main class="game-container centered">
+            <div class="waiting-illustration">🗳️</div>
+            <h2>Aguardando pergunta...</h2>
+            <p class="subtitle">O anfitrião está criando a próxima pergunta.</p>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="../../../src/client/socket-client.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

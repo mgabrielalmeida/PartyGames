@@ -16,6 +16,7 @@ const path = require('path');
 const RoomManager = require('./rooms/RoomManager');
 const roomHandler = require('./handlers/roomHandler');
 const votacaoHandler = require('./games/votacao/votacaoHandler');
+const impostorHandler = require('./games/impostor/impostorHandler');
 
 /* -----------------------------------------
    CONFIGURAÇÃO
@@ -71,6 +72,9 @@ roomHandler(io, roomManager);
 
 // 2. Handler do jogo de Votação Anônima
 votacaoHandler.init(io, roomManager);
+
+// 3. Handler do jogo O Impostor
+impostorHandler.init(io, roomManager);
 
 // ═══════════════════════════════════════════
 // Para adicionar novos jogos, basta:

@@ -1,0 +1,257 @@
+CONSTANTES:
+    CORES = {VERMELHO, AZUL, VERDE, AMARELO}
+    VALORES_NUMERICOS = {0..9}
+    TIPO_BASE = {NUMERO, PULAR, +X, SWAP, ROLETA}
+    CARTAS_MODIFICADORES = {TARGET, INVERTER, CORINGA, DOUBLE}
+
+EXPLICAÇÃO DAS CARTAS-BASE
+    PULAR: pula o próximo jogador (não admite TARGET)
+    +X: compra X cartas
+    SWAP: troca as mãos com o próximo jogador
+    ROLETA: escolhe uma cor
+    NUMERO: carta sem efeito
+
+EXPLICAÇÃO DAS CARTAS-MODIFICADORAS
+    TARGET: escolhe um jogador para sofrer a ação
+    INVERTER: inverte a direção antes de executar a ação da carta-base
+    CORINGA: permite ao usuário jogar uma carta independentemente de qual a sua cor e qual a cor do topo da pilha de descarte
+    DOUBLE: aumenta o efeito da ação modificada
+
+    Observações:
+        Cada carta-base só admite um modificador, se um modificador já está escolhido, não permitir escolha de outro
+        O modificador TARGET impede qualquer tipo de reação à ação modificada
+
+ESTRUTURAS:
+Jogador:
+    id
+    mao (lista de cartas)
+    ativo (bool)
+    pilha de ações pendentes
+
+Carta:
+    cor (ou NULO para coringa)
+    tipo (NUMERO, +X, PULAR, SWAP, ROLETA)
+    modificador aplicado (TARGET, INVERTER, CORINGA, DOUBLE ou NULO)
+    valor (se NUMERO)
+
+EstadoJogo:
+    jogadores (lista)
+    baralho (pilha)
+    descarte (pilha)
+    direcao (1 ou -1)
+    indiceJogadorAtual
+    corAtual
+    jogoAtivo (bool)
+
+Acao:
+    tipo (PULAR, +X, ROLETA)
+    valor (se tipo é +X)
+    cor (se tipo é ROLETA)
+    modificador (TARGET, INVERTER, CORINGA, DOUBLE ou NULO)
+
+---
+
+FUNÇÃO inicializarJogo(jogadores):
+embaralhar(baralho)
+para cada jogador:
+comprar 7 cartas
+cartaInicial = comprarCarta(baralho)
+
+enquanto cartaInicial.tipo não é NUMERO:
+    devolver carta ao baralho
+    embaralhar
+    cartaInicial = comprarCarta(baralho)
+
+colocar cartaInicial em descarte
+definir corAtual = cartaInicial.cor
+definir direcao = 1
+definir indiceJogadorAtual = 0
+jogoAtivo = verdadeiro
+
+---
+
+FUNÇÃO proximoJogador():
+indiceJogadorAtual = (indiceJogadorAtual + direcao) % número de jogadores
+
+---
+
+FUNÇÃO cartaValida(carta, corAtual, topoDescarte):
+se carta.modificador == CORINGA:
+retornar verdadeiro
+se carta.cor == corAtual:
+retornar verdadeiro
+se carta.tipo == topoDescarte.tipo:
+retornar verdadeiro
+se carta.tipo == NUMERO e carta.valor == topoDescarte.valor:
+retornar verdadeiro
+retornar falso
+
+---
+
+LOOP PRINCIPAL:
+ENQUANTO jogoAtivo:
+
+jogador = jogadores[indiceJogadorAtual]
+topo = topo da pilha descarte
+
+JOGADA jogador:
+    SE há ações na pilha de ações do jogador:
+        reagir à ação OU aceitar a ação
+    SENÃO:
+        escolher uma carta da mão OU comprar cartas
+
+SE jogador joga uma carta:
+    SE cartaValida(carta):
+        remover carta da mão
+        adicionar carta ao descarte
+
+        SE jogador.mao está vazia:
+            declarar jogador vencedor
+            jogoAtivo = falso
+            PARAR LOOP
+
+        APLICAR efeito da carta:
+            SE tipo == PULAR:
+                SE modificador == TARGET:
+                    escolher jogador
+                    inserir PULAR na pilha de ações do jogador escolhido
+                SE modificador == INVERTER:
+                    inverter direcao
+                    inserir PULAR na pilha de ações do próximo jogador
+                SE modificador == DOUBLE:
+                    inserir PULAR na pilha de ações dos dois próximos jogadores
+                SE modificador == NULO:
+                    inserir PULAR na pilha de ações do próximo jogador
+
+            SE tipo == +X:
+                SE modificador == TARGET:
+                    escolher jogador
+                    inserir +X na pilha de ações do jogador escolhido
+                SE modificador == INVERTER:
+                    inverter direcao
+                    inserir +X na pilha de ações do próximo jogador
+                SE modificador == DOUBLE:
+                    inserir +2X na pilha de ações do próximo jogador
+                SE modificador == NULO:
+                    inserir +X na pilha de ações do próximo jogador
+
+            SE tipo == SWAP:
+                SE modificador == DOUBLE:
+                    para todo jogador:
+                        trocar mão com o jogador seguinte
+                SE modificador == INVERTER:
+                    inverter direcao
+                    trocar mão com o jogador seguinte
+                SE modificador == TARGET:
+                    escolher dois jogadores para trocarem as mãos entre si
+                SE modificador == NULO: 
+                    escolher um jogador, jogador atual troca as mãos com o jogador escolhido
+            
+            SE tipo == ROLETA:
+                SE modificador == DOUBLE:
+                    escolher cor
+                    inserir ROLETA(cor) na pilha de ações do próximo jogador
+                    inserir ROLETA(cor) na pilha de ações do próximo jogador
+                SE modificador == INVERTER:
+                    inverter direcao
+                    escolher cor
+                    inserir ROLETA(cor) na pilha de ações do próximo jogador
+                SE modificador == TARGET:
+                    escolher jogador
+                    escolher cor 
+                    inserir ROLETA(cor) na pilha de ações do jogador escolhido
+                SE modificador == NULO:
+                    escolher cor
+                    inserir ROLETA(cor) na pilha de ações do próximo jogador
+
+            corAtual = carta.cor
+
+        proximoJogador()
+
+    SENÃO:
+        aviso de jogada inválida
+        orientar que o jogador compre cartas ou jogue uma ação correta
+
+SE jogador compra carta:
+    cartaComprada = comprarCarta(baralho)
+
+    SE cartaValida(cartaComprada):
+        jogador pode jogar imediatamente OU guardar 
+        SE jogar:
+            aplicar efeito da carta
+        SENÃO:
+            adicionar carta à mão
+            comprar outra carta
+    SENÃO:
+        adicionar carta à mão
+        comprar outra carta
+
+SE jogador tem ações pendentes (pilha de ações não-vazia):
+    Ordem de execução de ações:
+        1 - ações com modificador TARGET
+        2 - ações PULAR
+        3 - ações +X
+        4 - ações ROLETA
+
+    SE ação.modificador == TARGET:
+        SE ação == PULAR:
+            remover ação da pilha
+            proximo jogador
+        SE ação == +X:
+            jogador deve comprar Z cartas (em que Z é a soma de todas as ações do tipo +X na pilha)
+            remover ações do tipo +X da pilha
+            proximo jogador
+        SE ação == ROLETA:
+            para cada ação do tipo ROLETA(cor) na pilha de ações do jogador atual:
+                jogador deve comprar cartas até vir UMA carta da cor escolhida
+            remover ações do tipo ROLETA da pilha
+            
+    SENÃO: (jogador pode reagir)
+        SE ação == +X:
+            jogador pode jogar um +Y se Y>=X
+            SE jogar:
+                remover todas as ações do tipo +X da pilha de ações do jogador atual
+                adicionar todas as ações removidas do tipo +X à pilha de ações do jogador seguinte
+                adicionar +Y à pilha de ações do jogador seguinte
+            SENÃO:
+                comprar Z cartas (em que Z é a soma de todas as ações do tipo +X na pilha)
+                remover ações do tipo +X da pilha
+                proximo jogador
+        SE ação == ROLETA:
+            jogador pode jogar uma ROLETA:
+            SE jogar:
+                remover todas as ações do tipo ROLETA da pilha de ações do jogador atual
+                adicionar todas as ações removidas do tipo ROLETA à pilha de ações do jogador seguinte
+                adicionar ROLETA à pilha de ações do jogador seguinte
+            SENÃO:
+                para cada ação do tipo ROLETA(cor) na pilha de ações do jogador atual:
+                    comprar cartas até vir UMA carta da cor escolhida
+                proximo jogador
+
+---
+
+DESCRICAO DO BARALHO:
+    4 cartas de cada número (0 - 9) por cor
+    2 cartas do tipo PULAR por cor
+    2 carta do tipo SWAP por cor
+    1 carta do tipo ROLETA por cor
+    3 cartas do tipo +2 por cor
+    3 cartas do tipo +4 por cor
+    2 cartas do tipo +6 por cor
+    1 carta do tipo +8 por cor
+    8 cartas-modificadoras CORINGA
+    8 cartas-modificadoras TARGET
+    8 cartas-modificadoras INVERTER
+    8 cartas-modificadoras DOUBLE
+
+REGRAS ADICIONAIS:
+
+- Se baralho acabar:
+embaralhar descarte (exceto topo) e formar novo baralho
+
+---
+
+FIM DO JOGO:
+vencedor = jogador sem cartas
+se um jogador possuir mais de 30 cartas, ele é eliminado
+se apenas um jogador restar ele é o vencedor

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Impostor | Party Games</title>
+    
+    <link rel="stylesheet" href="../../../assets/css/global.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════
+         TELA 1: WAITING
+         ═══════════════════════════════════════ -->
+    <section id="screen-waiting" class="screen active">
+        <div class="waiting-container">
+            <div class="spinner"></div>
+            <h2 id="wait-msg">Aguardando o sincronismo<span class="dots">...</span></h2>
+            <p>Sala: <strong class="room-code-display">----</strong></p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 2: ROLE REVEAL
+         ═══════════════════════════════════════ -->
+    <section id="screen-role" class="screen">
+        <div class="role-reveal-container">
+            <h1 class="role-title" id="role-title">O SEU PAPEL É...</h1>
+            <div class="role-card" id="role-card">
+                <div class="role-icon" id="role-icon">❓</div>
+                <div class="role-name" id="role-name">Aguarde</div>
+                <div class="role-desc" id="role-desc">Sorteando as cartas do destino...</div>
+            </div>
+            <button id="btn-continue-game" class="btn btn-primary mt-4" style="display:none;">Entendi</button>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 3: GAME BOARD
+         ═══════════════════════════════════════ -->
+    <section id="screen-game" class="screen">
+        <header class="game-header">
+            <div class="header-left">
+                <span class="room-label">SALA</span>
+                <span class="room-code-display">----</span>
+            </div>
+            <div class="header-center">
+                <div class="timer-display" id="game-timer">00:00</div>
+            </div>
+            <div class="header-right">
+                <button id="btn-end-game" class="btn-danger-outline" style="display:none;">Encerrar Jogo</button>
+            </div>
+        </header>
+
+        <main class="game-board" id="board-innocent" style="display:none;">
+            <div class="info-card innocent">
+                <h3>📍 Seu Local</h3>
+                <div class="location-name" id="game-location-name">PRAIA</div>
+                <p>Descubra quem não conhece este lugar.</p>
+            </div>
+
+            <div class="suspicion-board">
+                <h3>🔍 Tabela de Suspeita</h3>
+                <div class="table-container">
+                    <table class="suspicion-table" id="suspicion-table">
+                        <thead>
+                            <tr>
+                                <th>Jogador</th>
+                                <th class="level-col">Nível 1</th>
+                                <th class="level-col">Nível 2</th>
+                                <th class="level-col">Nível 3</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suspicion-tbody">
+                            <!-- Injetado por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button id="btn-open-vote-innocent" class="btn btn-danger btn-large pulse">
+                🚨 ABRIR VOTAÇÃO
+            </button>
+            <p class="vote-hint">Apenas abra se estiver certo de quem é o impostor.</p>
+        </main>
+
+        <main class="game-board" id="board-impostor" style="display:none;">
+            <div class="info-card impostor">
+                <h3>🕵️ Você é o Impostor</h3>
+                <p>Minta e tente descobrir o verdadeiro local usando a lista abaixo.</p>
+            </div>
+
+            <div class="location-list-board">
+                <h3>🗺️ Lista de Locais</h3>
+                <div class="locations-grid" id="locations-grid">
+                    <!-- Injetado por JS -->
+                </div>
+            </div>
+
+            <button id="btn-open-vote-impostor" class="btn btn-danger btn-large" disabled>
+                🚨 FORÇAR VOTAÇÃO
+            </button>
+            <p class="vote-hint" id="impostor-vote-hint">Ficará disponível em 5 minutos.</p>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 4: VOTING
+         ═══════════════════════════════════════ -->
+    <section id="screen-voting" class="screen">
+        <div class="voting-header">
+            <h2>🚨 HORA DA VOTAÇÃO</h2>
+            <p id="voting-reason">Alguém abriu a votação. Descubra o impostor!</p>
+            <div class="timer-display urgent" id="vote-countdown">60s</div>
+        </div>
+
+        <main class="voting-board">
+            <p>Quem você acha que é o impostor?</p>
+            <div class="vote-options-grid" id="vote-players-grid">
+                <!-- Injetado por JS -->
+            </div>
+            
+            <div id="vote-confirmed-msg" style="display:none;" class="vote-confirmed">
+                ✅ Voto registrado. Aguardando demais jogadores...
+            </div>
+            
+            <div class="vote-progress">
+                <div class="vote-progress-bar">
+                    <div id="vote-progress-fill" class="vote-progress-fill"></div>
+                </div>
+                <div id="vote-progress-text" class="vote-progress-text">0/0 votaram</div>
+            </div>
+        </main>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 5: RESULTS
+         ═══════════════════════════════════════ -->
+    <section id="screen-results" class="screen">
+        <div class="results-container">
+            <div class="results-header" id="results-header">
+                <h1 id="results-title">VITÓRIA DOS INOCENTES</h1>
+                <p id="results-subtitle">O impostor foi descoberto!</p>
+            </div>
+
+            <div class="results-details">
+                <div class="detail-card">
+                    <h4>🕵️ O Impostor era:</h4>
+                    <h2 id="result-impostor-name">João</h2>
+                </div>
+                <div class="detail-card">
+                    <h4>📍 O Local verdadeiro era:</h4>
+                    <h2 id="result-location-name">Praia</h2>
+                </div>
+            </div>
+
+            <div class="results-votes">
+                <h3>Votos Recebidos</h3>
+                <ul id="results-votes-list" class="results-votes-list">
+                    <!-- Injetado por JS -->
+                </ul>
+            </div>
+
+            <div class="results-actions" id="results-actions" style="display:none;">
+                <button id="btn-play-again" class="btn btn-primary">Jogar Novamente</button>
+                <button id="btn-end-game-results" class="btn btn-secondary mt-2">Voltar ao Lobby</button>
+            </div>
+            <div class="results-waiting" id="results-waiting" style="display:none;">
+                Aguardando o anfitrião decidir...
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="../../../src/client/socket-client.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

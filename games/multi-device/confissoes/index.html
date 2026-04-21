@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confissões | Party Games</title>
+    <meta name="description" content="Conte histórias e descubra quem está mentindo!">
+
+    <link rel="stylesheet" href="../../../assets/css/global.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════
+         TELA 1: WAITING
+         ═══════════════════════════════════════ -->
+    <section id="screen-waiting" class="screen active">
+        <div class="waiting-container">
+            <div class="spinner"></div>
+            <h2 id="wait-msg">Aguardando o sincronismo<span class="dots">...</span></h2>
+            <p>Sala: <strong class="room-code-display">----</strong></p>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 2: ROLE REVEAL
+         ═══════════════════════════════════════ -->
+    <section id="screen-reveal" class="screen">
+        <div class="reveal-container">
+            <p class="reveal-subtitle" id="reveal-round-info">Rodada 1</p>
+
+            <div class="reveal-card" id="reveal-card">
+                <div class="reveal-role-icon" id="reveal-icon">❓</div>
+                <div class="reveal-role-label" id="reveal-role-label">Aguarde</div>
+
+                <div class="reveal-word-section">
+                    <div class="reveal-word-label">Palavra da rodada</div>
+                    <div class="reveal-word" id="reveal-word">...</div>
+                </div>
+
+                <!-- Seção Verdade/Mentira (apenas mestre vê) -->
+                <div class="reveal-truth-section" id="reveal-truth-section" style="display:none;">
+                    <div class="reveal-truth-label">Sua missão</div>
+                    <div class="reveal-truth-value" id="reveal-truth-value">...</div>
+                </div>
+
+                <p class="reveal-hint" id="reveal-hint"></p>
+            </div>
+
+            <button id="btn-reveal-continue" class="btn btn-primary mt-4" style="display:none;">Entendi! Vamos lá</button>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 3: STORYTELLING (JOGO)
+         ═══════════════════════════════════════ -->
+    <section id="screen-storytelling" class="screen">
+        <div class="storytelling-container">
+
+            <div class="storytelling-header">
+                <h2>🤫 Confissões</h2>
+                <span class="storytelling-round-badge" id="storytelling-round-badge">Rodada 1</span>
+            </div>
+
+            <!-- Info do mestre atual -->
+            <div class="storytelling-master-info">
+                <div class="master-name" id="storytelling-master-name">João</div>
+                <span class="master-role-tag">🎤 Mestre da Rodada</span>
+            </div>
+
+            <!-- Palavra da rodada -->
+            <div class="word-display-card">
+                <div class="word-display-label">Palavra da rodada</div>
+                <div class="word-display-value" id="storytelling-word">PRAIA</div>
+            </div>
+
+            <!-- Board do MESTRE (só mestre vê) -->
+            <div id="board-master" style="display:none;">
+                <div class="truth-indicator" id="storytelling-truth-indicator">
+                    <div class="truth-indicator-label">Sua missão</div>
+                    <div class="truth-indicator-value" id="storytelling-truth-value">VERDADE</div>
+                </div>
+                <p class="master-waiting-msg">
+                    Conte sua história em voz alta para os outros jogadores.<br>
+                    Aguardando todos votarem<span class="dots">...</span>
+                </p>
+            </div>
+
+            <!-- Board dos VOTANTES (não-mestre) -->
+            <div id="board-voter" style="display:none;">
+                <div class="vote-buttons">
+                    <button id="btn-vote-truth" class="btn-vote btn-vote-truth">
+                        ✅ É verdade!
+                    </button>
+                    <button id="btn-vote-lie" class="btn-vote btn-vote-lie">
+                        ❌ É mentira!
+                    </button>
+                </div>
+
+                <div id="vote-confirmed-msg" class="vote-confirmed-section" style="display:none;">
+                    ✅ Voto registrado! Aguardando a rodada encerrar<span class="dots">...</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TELA 4: RESULTS
+         ═══════════════════════════════════════ -->
+    <section id="screen-results" class="screen">
+        <div class="results-container">
+
+            <!-- A Verdade Revelada -->
+            <div class="results-truth-reveal">
+                <h2>A história era...</h2>
+                <div class="truth-reveal-badge" id="results-truth-badge">VERDADE</div>
+            </div>
+
+            <!-- Palavra usada -->
+            <div class="results-word-display">
+                <span class="results-word" id="results-word">PRAIA</span>
+            </div>
+
+            <!-- Mestre da rodada -->
+            <div class="results-master-info">
+                Mestre: <strong id="results-master-name">João</strong>
+            </div>
+
+            <!-- Vencedores -->
+            <div class="results-section" id="results-winners-section">
+                <div class="results-section-title winners">🏆 Vencedores</div>
+                <ul class="results-player-list" id="results-winners-list">
+                    <!-- Injetado por JS -->
+                </ul>
+            </div>
+
+            <!-- Perdedores -->
+            <div class="results-section" id="results-losers-section">
+                <div class="results-section-title losers">💀 Perdedores</div>
+                <ul class="results-player-list" id="results-losers-list">
+                    <!-- Injetado por JS -->
+                </ul>
+            </div>
+
+            <!-- Ações (apenas host) -->
+            <div class="results-actions" id="results-actions" style="display:none;">
+                <button id="btn-next-round" class="btn btn-primary">🔄 Próxima Rodada</button>
+                <button id="btn-end-game" class="btn btn-secondary mt-2">🚪 Voltar ao Lobby</button>
+            </div>
+
+            <div class="results-waiting" id="results-waiting" style="display:none;">
+                Aguardando o anfitrião decidir<span class="dots">...</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="../../../src/client/socket-client.js"></script>
+    <script src="../../../assets/js/app.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

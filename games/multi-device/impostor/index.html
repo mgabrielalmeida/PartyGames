@@ -31,6 +31,21 @@
     </section>
 
     <!-- ═══════════════════════════════════════
+         TELA 1.5: CONFIG (Host Only)
+         ═══════════════════════════════════════ -->
+    <section id="screen-config" class="screen">
+        <div class="config-container">
+            <h2>⚙️ Configuração da Partida</h2>
+            <p class="mb-4 text-muted">Escolha a categoria dos itens a serem sorteados:</p>
+            
+            <div class="category-buttons mt-4">
+                <button id="btn-cat-locations" class="btn btn-primary mb-2">📍 Jogar com Locais</button>
+                <button id="btn-cat-words" class="btn btn-secondary">📝 Jogar com Palavras aleatórias</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
          TELA 2: ROLE REVEAL
          ═══════════════════════════════════════ -->
     <section id="screen-role" class="screen">
@@ -64,9 +79,9 @@
 
         <main class="game-board" id="board-innocent" style="display:none;">
             <div class="info-card innocent">
-                <h3>📍 Seu Local</h3>
+                <h3 id="dynamic-role-title">📍 Seu Local</h3>
                 <div class="location-name" id="game-location-name">PRAIA</div>
-                <p>Descubra quem não conhece este lugar.</p>
+                <p id="innocent-hint-text">Descubra quem não conhece este lugar.</p>
             </div>
 
             <div class="suspicion-board">
@@ -97,11 +112,11 @@
         <main class="game-board" id="board-impostor" style="display:none;">
             <div class="info-card impostor">
                 <h3>🕵️ Você é o Impostor</h3>
-                <p>Minta e tente descobrir o verdadeiro local usando a lista abaixo.</p>
+                <p id="impostor-info-text">Minta e tente descobrir o verdadeiro local usando a lista abaixo.</p>
             </div>
 
             <div class="location-list-board">
-                <h3>🗺️ Lista de Locais</h3>
+                <h3 id="impostor-list-title">🗺️ Lista de Locais</h3>
                 <div class="locations-grid" id="locations-grid">
                     <!-- Injetado por JS -->
                 </div>
@@ -159,7 +174,7 @@
                     <h2 id="result-impostor-name">João</h2>
                 </div>
                 <div class="detail-card">
-                    <h4>📍 O Local verdadeiro era:</h4>
+                    <h4 id="result-target-title">📍 O Local verdadeiro era:</h4>
                     <h2 id="result-location-name">Praia</h2>
                 </div>
             </div>

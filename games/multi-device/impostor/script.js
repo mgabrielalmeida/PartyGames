@@ -6,6 +6,7 @@
 
   /* ─── TELAS ──────────────────────────── */
   const $waiting = document.getElementById('screen-waiting');
+  const $config  = document.getElementById('screen-config');
   const $role    = document.getElementById('screen-role');
   const $game    = document.getElementById('screen-game');
   const $voting  = document.getElementById('screen-voting');
@@ -13,6 +14,8 @@
 
   /* ─── ELEMENTOS ──────────────────────── */
   const $waitMsg = document.getElementById('wait-msg');
+  const $btnCatLoc = document.getElementById('btn-cat-locations');
+  const $btnCatWord = document.getElementById('btn-cat-words');
   const $roleTitle = document.getElementById('role-title');
   const $roleCard = document.getElementById('role-card');
   const $roleIcon = document.getElementById('role-icon');
@@ -23,7 +26,11 @@
   const $gameTimer = document.getElementById('game-timer');
   const $boardInnocent = document.getElementById('board-innocent');
   const $boardImpostor = document.getElementById('board-impostor');
+  const $dynamicRoleTitle = document.getElementById('dynamic-role-title');
+  const $innocentHintText = document.getElementById('innocent-hint-text');
   const $gameLocationName = document.getElementById('game-location-name');
+  const $impostorInfoText = document.getElementById('impostor-info-text');
+  const $impostorListTitle = document.getElementById('impostor-list-title');
   const $suspicionTbody = document.getElementById('suspicion-tbody');
   const $locationsGrid = document.getElementById('locations-grid');
   
@@ -42,6 +49,7 @@
   const $resultsTitle = document.getElementById('results-title');
   const $resultsSubtitle = document.getElementById('results-subtitle');
   const $resultImpostorName = document.getElementById('result-impostor-name');
+  const $resultTargetTitle = document.getElementById('result-target-title');
   const $resultLocationName = document.getElementById('result-location-name');
   const $resultsVotesList = document.getElementById('results-votes-list');
   const $resultsActions = document.getElementById('results-actions');
@@ -73,7 +81,7 @@
 
   /* ─── NAVEGAÇÃO ──────────────────────── */
   function showScreen(screen) {
-    [$waiting, $role, $game, $voting, $results].forEach(s => s.classList.remove('active'));
+    [$waiting, $config, $role, $game, $voting, $results].forEach(s => s.classList.remove('active'));
     screen.classList.add('active');
   }
 
@@ -219,6 +227,17 @@
   }
 
   /* ─── EVENT LISTENER BUTTONS ─────────── */
+  if ($btnCatLoc) {
+    $btnCatLoc.addEventListener('click', () => {
+      PartySocket.emit('impostor:startGame', { category: 'locations' });
+    });
+  }
+  if ($btnCatWord) {
+    $btnCatWord.addEventListener('click', () => {
+      PartySocket.emit('impostor:startGame', { category: 'words' });
+    });
+  }
+
   $btnContinueGame.addEventListener('click', () => {
     showScreen($game);
   });
@@ -268,7 +287,10 @@
 
   PartySocket.on('impostor:waitingForStart', () => {
     if (isHost) {
-      PartySocket.emit('impostor:startGame');
+      showScreen($config);
+    } else {
+      if ($waitMsg) $waitMsg.innerHTML = 'Aguardando o anfitrião configurar a partida<span class="dots">...</span>';
+      showScreen($waiting);
     }
   });
 
@@ -296,28 +318,38 @@
 
   function showRoleReveal(data) {
     $roleCard.className = 'role-card revealed ' + (data.role === 'IMPOSTOR' ? 'impostor' : 'innocent');
+    const isLoc = data.category !== 'words';
+    
     if (data.role === 'IMPOSTOR') {
       $roleIcon.textContent = '🕵️';
       $roleName.textContent = 'IMPOSTOR';
       $roleDesc.textContent = 'Minta. Engane. Vença.';
     } else {
-      $roleIcon.textContent = '📍';
+      $roleIcon.textContent = isLoc ? '📍' : '📝';
       $roleName.textContent = 'INOCENTE';
-      $roleDesc.textContent = `Local: ${data.location}`;
+      $roleDesc.textContent = (isLoc ? 'Local: ' : 'Palavra: ') + data.targetItem;
     }
     $btnContinueGame.style.display = 'inline-block';
     showScreen($role);
   }
 
   function setupGameBoard(data) {
+    const isLoc = data.category !== 'words';
+    
+    // Textos dinâmicos
+    if ($dynamicRoleTitle) $dynamicRoleTitle.textContent = isLoc ? '📍 Seu Local' : '📝 Sua Palavra';
+    if ($innocentHintText) $innocentHintText.textContent = isLoc ? 'Descubra quem não conhece este lugar.' : 'Descubra quem não conhece esta palavra.';
+    if ($impostorInfoText) $impostorInfoText.textContent = isLoc ? 'Minta e tente descobrir o verdadeiro local usando a lista abaixo.' : 'Minta e tente descobrir a verdadeira palavra usando a lista abaixo.';
+    if ($impostorListTitle) $impostorListTitle.textContent = isLoc ? '🗺️ Lista de Locais' : '📜 Lista de Palavras';
+
     if (data.role === 'IMPOSTOR') {
       $boardInnocent.style.display = 'none';
       $boardImpostor.style.display = 'flex';
-      renderLocationsGrid(data.allLocations);
+      renderLocationsGrid(data.allItems);
     } else {
       $boardInnocent.style.display = 'flex';
       $boardImpostor.style.display = 'none';
-      $gameLocationName.textContent = data.location;
+      $gameLocationName.textContent = data.targetItem;
       renderSuspicionTable();
     }
   }
@@ -356,7 +388,11 @@
     }
 
     $resultImpostorName.textContent = escapeHtml(data.impostorNickname);
-    $resultLocationName.textContent = data.location;
+    const isLoc = data.category !== 'words';
+    if ($resultTargetTitle) {
+      $resultTargetTitle.textContent = isLoc ? '📍 O Local verdadeiro era:' : '📝 A Palavra verdadeira era:';
+    }
+    $resultLocationName.textContent = data.targetItem;
 
     $resultsVotesList.innerHTML = '';
     for (const [targetId, votes] of Object.entries(data.votesCount)) {
@@ -425,7 +461,7 @@
     updateRoomCodes();
 
     if ($waitMsg) {
-      $waitMsg.innerHTML = isHost ? 'Sincronizando... para jogar Inicie no Lobby' : 'Sincronizando com a partida...';
+      $waitMsg.innerHTML = isHost ? 'Sincronizando... para jogar configure a partida' : 'Sincronizando com a partida<span class="dots">...</span>';
     }
 
     // O game state eh criado via evento no sync

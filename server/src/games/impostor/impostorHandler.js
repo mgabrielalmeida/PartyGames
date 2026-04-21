@@ -5,6 +5,7 @@
    ========================================= */
 
 const LOCATIONS = require('./locations');
+const WORDS = require('./words');
 
 const GAME_ID = 'impostor';
 
@@ -40,8 +41,9 @@ function init(io, roomManager) {
           gameStartTime: room.gameState.gameStartTime,
           impostorId: socket.id === room.gameState.impostorId ? room.gameState.impostorId : null,
           role: socket.id === room.gameState.impostorId ? 'IMPOSTOR' : 'INNOCENT',
-          location: socket.id === room.gameState.impostorId ? null : room.gameState.location,
-          allLocations: LOCATIONS,
+          category: room.gameState.category,
+          targetItem: socket.id === room.gameState.impostorId ? null : room.gameState.targetItem,
+          allItems: room.gameState.category === 'words' ? WORDS : LOCATIONS,
           voteStartTime: room.gameState.voteStartTime,
           voteDeadline: room.gameState.voteDeadline,
           results: room.gameState.results
@@ -55,7 +57,7 @@ function init(io, roomManager) {
     /* -----------------------------------------
        impostor:startGame — Inicia a partida e gera papéis
        ----------------------------------------- */
-    socket.on('impostor:startGame', () => {
+    socket.on('impostor:startGame', (payload) => {
       try {
         const roomInfo = roomManager.getRoomBySocket(socket.id);
         if (!roomInfo) return;
@@ -75,14 +77,18 @@ function init(io, roomManager) {
         }
 
         // Sorteios
+        const category = payload && payload.category === 'words' ? 'words' : 'locations';
+        const itemsList = category === 'words' ? WORDS : LOCATIONS;
+        
         const impostorId = playerIds[Math.floor(Math.random() * playerIds.length)];
-        const location = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
+        const targetItem = itemsList[Math.floor(Math.random() * itemsList.length)];
         const now = Date.now();
 
         room.gameState = {
           phase: 'IN_GAME',
+          category,
           impostorId,
-          location,
+          targetItem,
           gameStartTime: now,
           votes: new Map(),
           voteStartTime: null,
@@ -105,8 +111,9 @@ function init(io, roomManager) {
           io.to(pId).emit('impostor:gameStarted', {
             gameStartTime: now,
             role: isImpostor ? 'IMPOSTOR' : 'INNOCENT',
-            location: isImpostor ? null : location,
-            allLocations: LOCATIONS
+            category,
+            targetItem: isImpostor ? null : targetItem,
+            allItems: itemsList
           });
         });
 
@@ -285,7 +292,8 @@ function resolveVoting(io, roomManager, roomCode) {
     winners,
     impostorId,
     impostorNickname: room.players.get(impostorId) ? room.players.get(impostorId).nickname : 'Desconhecido',
-    location: room.gameState.location,
+    category: room.gameState.category,
+    targetItem: room.gameState.targetItem,
     mostVotedId,
     mostVotedNickname: mostVotedId && room.players.get(mostVotedId) ? room.players.get(mostVotedId).nickname : null,
     isTie,

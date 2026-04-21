@@ -93,10 +93,10 @@ roomManager.startCleanup(60000); // A cada 1 minuto
 server.listen(PORT, () => {
   console.log('');
   console.log('╔═══════════════════════════════════════════╗');
-  console.log('║      🎮 PartyGames Server Online 🎮      ║');
+  console.log('║      🎮 PartyGames Server Online 🎮       ║');
   console.log('╠═══════════════════════════════════════════╣');
   console.log(`║  URL:  http://localhost:${PORT}              ║`);
-  console.log(`║  Env:  ${process.env.NODE_ENV || 'development'}                    ║`);
+  console.log(`║  Env:  ${process.env.NODE_ENV || 'development'}                        ║`);
   console.log('╚═══════════════════════════════════════════╝');
   console.log('');
 });

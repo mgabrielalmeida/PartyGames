@@ -50,6 +50,39 @@ h1, h2, h3, h4 {
     margin: auto;
 }
 
+/* --- Config Screen --- */
+.config-container {
+    text-align: center;
+    margin: auto;
+    background: var(--color-surface);
+    padding: 2.5rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-surface-light);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 400px;
+    width: 100%;
+}
+
+.config-container h2 {
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.config-container .text-muted {
+    font-size: 0.95rem;
+}
+
+.category-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mb-4 { margin-bottom: 2rem; }
+.mb-2 { margin-bottom: 1rem; }
+
 .spinner {
     width: 50px;
     height: 50px;

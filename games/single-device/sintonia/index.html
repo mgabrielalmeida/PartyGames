@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Sintonia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../../assets/css/global.css">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Background Animated Shapes -->
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
 
     <header class="barra-superior">
 
@@ -29,7 +36,7 @@
 
     </header>
 
-    <h1>Sintonia</h1>
+    <h1 class="gradient-text" style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">Sintonia</h1>
 
     <div class="toggle-container">
         <label class="switch">
@@ -61,12 +68,12 @@
     </div>
 
     <div class="botoes">
-        <button id="btn-girar">Girar Roleta (Novo Alvo)</button>
-        <button id="btn-revelar">Abrir/Fechar Tampa</button>
-        <button id="btn-palpite">Palpite!</button>
+        <button id="btn-girar" class="btn glass-btn">Girar Roleta (Novo Alvo)</button>
+        <button id="btn-revelar" class="btn glass-btn">Abrir/Fechar Tampa</button>
+        <button id="btn-palpite" class="btn btn-primary">Palpite!</button>
     </div>
 
-    <script src="../../assets/js/app.js"></script>
+    <script src="../../../assets/js/app.js"></script>
 
     <script src="script.js"></script>
 

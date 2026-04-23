@@ -4,34 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Acervo de Jogos</title>
+    <title>Party Games | O Melhor Acervo</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
 </head>
 
 <body>
+    <!-- Background Animated Shapes -->
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
 
     <header class="site-header">
-        <h1>Acervo de Party Games</h1>
-        <p>Escolha o seu estilo de jogo para começar a diversão!</p>
+        <h1 class="gradient-text">Party Games</h1>
+        <p>A diversão começa aqui. Escolha o seu estilo de jogo!</p>
     </header>
 
     <main class="menu-container">
-
         <nav class="game-modes">
-
-            <a href="single-device.html" class="mode-card">
-                <h2>1 Dispositivo</h2>
-                <p>Passem o celular ou joguem todos olhando para a mesma tela.</p>
+            <a href="single-device.html" class="mode-card glass-card group">
+                <div class="mode-icon">📱</div>
+                <div class="mode-content">
+                    <h2>1 Dispositivo</h2>
+                    <p>Passem o celular ou joguem todos olhando para a mesma tela.</p>
+                </div>
+                <div class="mode-arrow">→</div>
             </a>
 
-            <a href="multi-device.html" class="mode-card">
-                <h2>Multi-dispositivos</h2>
-                <p>Cada jogador usa o seu próprio celular.</p>
+            <a href="multi-device.html" class="mode-card glass-card group">
+                <div class="mode-icon">🌐</div>
+                <div class="mode-content">
+                    <h2>Multi-dispositivos</h2>
+                    <p>Cada jogador usa o seu próprio celular para participar.</p>
+                </div>
+                <div class="mode-arrow">→</div>
             </a>
-
         </nav>
-
     </main>
 
     <footer class="site-footer">

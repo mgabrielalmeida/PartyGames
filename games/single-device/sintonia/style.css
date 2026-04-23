@@ -6,12 +6,8 @@
 }
 
 body {
-    background-color: #282c34;
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
     padding-top: 10px;
-    /* Reduzido de 50px para 10px */
 }
 
 h1 {
@@ -47,20 +43,22 @@ p {
 }
 
 .jogador {
-    background-color: #3e4451;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
     padding: 10px 20px;
-    border-radius: 12px;
-    border: 3px solid transparent;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border, rgba(255, 255, 255, 0.1));
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    opacity: 0.5;
+    opacity: 0.6;
     transform: scale(0.9);
 }
 
 .jogador.ativo {
     opacity: 1;
-    border-color: #07f1b7;
-    box-shadow: 0 0 20px rgba(7, 241, 183, 0.4);
+    border-color: var(--accent-secondary, #00e5ff);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
     transform: scale(1.1);
+    background: rgba(0, 229, 255, 0.1);
 }
 
 .jogador h2 {
@@ -73,7 +71,7 @@ p {
     font-size: 24px;
     font-weight: 900;
     margin-bottom: 0;
-    color: #07f1b7;
+    color: var(--accent-secondary, #00e5ff);
     opacity: 1;
 }
 
@@ -106,7 +104,8 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #3e4451;
+    background-color: var(--glass-bg, #3e4451);
+    border: 1px solid var(--glass-border, rgba(255,255,255,0.1));
     transition: .4s;
 }
 
@@ -116,13 +115,14 @@ p {
     height: 16px;
     width: 16px;
     left: 4px;
-    bottom: 4px;
+    bottom: 3px;
     background-color: white;
     transition: .4s;
 }
 
 input:checked+.slider {
-    background-color: #07f1b7;
+    background-color: var(--accent-primary, #ff2a5f);
+    border-color: var(--accent-primary, #ff2a5f);
 }
 
 input:checked+.slider:before {
@@ -145,7 +145,7 @@ input:checked+.slider:before {
 
 #dica-rodada .destaque {
     font-weight: bold;
-    color: #07f1b7;
+    color: var(--accent-secondary, #00e5ff);
 }
 
 .dica-animada {
@@ -180,7 +180,7 @@ input:checked+.slider:before {
     font-size: 32px;
     font-weight: bold;
     color: white;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
     width: 180px;
     /* Ocupa exatamente 180px para não empurrar a roda */
     text-align: center;
@@ -220,7 +220,8 @@ input:checked+.slider:before {
     /* Corta o gradiente para mostrar só o círculo */
 
     /* --- CORREÇÃO: Borda em toda a volta para dar acabamento --- */
-    border: 5px solid #07f1b7;
+    border: 5px solid var(--accent-secondary, #00e5ff);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
 }
 
 /* --- O ALVO (O segredo do Gradiente 360º) --- */
@@ -236,22 +237,22 @@ input:checked+.slider:before {
     background-image: conic-gradient(from 0deg at center center,
 
             /* Preenche com cinza escuro do início (0%) até o começo do alvo */
-            #3e4451 0% 71.25%,
+            rgba(255,255,255,0.05) 0% 71.25%,
 
             /* AS FAIXAS DE PONTUAÇÃO (exatamente 1.5% cada) */
-            #e74c3c 71.25% 72.75%,
+            #ff2a5f 71.25% 72.75%,
             /* Vermelho 1 */
-            #f1c40f 72.75% 74.25%,
+            #ff7b00 72.75% 74.25%,
             /* Amarelo 1 */
-            #2ecc71 74.25% 75.75%,
+            #00e5ff 74.25% 75.75%,
             /* Verde (Alvo) - O meio exato é o 75%! */
-            #f1c40f 75.75% 77.25%,
+            #ff7b00 75.75% 77.25%,
             /* Amarelo 2 */
-            #e74c3c 77.25% 78.75%,
+            #ff2a5f 77.25% 78.75%,
             /* Vermelho 2 */
 
             /* Preenche o resto do círculo com cinza escuro até o final (100%) */
-            #3e4451 78.75% 100%);
+            rgba(255,255,255,0.05) 78.75% 100%);
 
     transition: transform 2s ease-in-out;
 }
@@ -286,36 +287,16 @@ input:checked+.slider:before {
     z-index: 10;
 }
 
-/* Estilo do Botão (Manteve-se igual) */
-button {
-    background-color: #3e4451;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 500;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Estilo do Botão adicional */
+.glass-btn {
+    background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+    color: var(--text-color, #fff);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(10px);
 }
-
-button:hover {
-    background-color: #4b5263;
-    transform: scale(1.05);
-}
-
-#btn-palpite {
-    background-color: #07f1b7;
-    color: #1a1a24;
-    font-weight: bold;
-    font-size: 18px;
-    box-shadow: 0 0 15px rgba(7, 241, 183, 0.4);
-}
-
-#btn-palpite:hover {
-    background-color: #09ffd2;
-    box-shadow: 0 0 25px rgba(7, 241, 183, 0.6);
-    transform: scale(1.1);
+.glass-btn:hover {
+    background: var(--card-hover-bg, rgba(255, 255, 255, 0.1));
+    border-color: var(--text-muted, #8b8b9e);
 }
 
 /* --- Estilo Base para ambas as tampas --- */
@@ -325,7 +306,7 @@ button:hover {
     width: 100%;
     height: 50%;
     /* Ocupa metade da roda */
-    background-color: #07f1b7;
+    background-color: var(--bg-base, #0a0a0f);
     /* Mesma cor de fundo para esconder perfeitamente */
     left: 0;
 
@@ -428,18 +409,18 @@ button:hover {
 
 @keyframes pulsarBorda {
     0% {
-        border-color: #07f1b7;
-        box-shadow: 0 0 5px #07f1b7;
+        border-color: var(--accent-secondary, #00e5ff);
+        box-shadow: 0 0 10px var(--accent-secondary, #00e5ff);
     }
 
     50% {
         border-color: #ffffff;
-        box-shadow: 0 0 20px #07f1b7;
+        box-shadow: 0 0 30px var(--accent-secondary, #00e5ff);
     }
 
     100% {
-        border-color: #07f1b7;
-        box-shadow: 0 0 5px #07f1b7;
+        border-color: var(--accent-secondary, #00e5ff);
+        box-shadow: 0 0 10px var(--accent-secondary, #00e5ff);
     }
 }
 

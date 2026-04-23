@@ -170,7 +170,7 @@ input:checked+.slider:before {
     width: 800px;
     /* Largura fixa que acomoda a roda e 200px pra cada lado */
     max-width: 100%;
-    margin: 5px auto 5px auto;
+    margin: 20px auto 5px auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -426,4 +426,54 @@ input:checked+.slider:before {
 
 .roda.girando {
     animation: pulsarBorda 0.5s ease-in-out infinite;
+}
+
+/* =========================================
+   RESPONSIVIDADE (Mobile)
+   ========================================= */
+@media (max-width: 768px) {
+    .barra-superior {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        align-items: center;
+    }
+    .barra-superior .back-btn {
+        margin: 0 auto;
+        justify-self: center;
+    }
+    .placar {
+        grid-column: 1;
+    }
+    .area-jogo {
+        flex-direction: column;
+        padding-top: 40px;
+    }
+    .extremo {
+        position: absolute;
+        top: -15px;
+        transform: none;
+        font-size: 20px;
+        width: 45%;
+    }
+    .extremo.esquerdo {
+        left: 5%;
+        text-align: left;
+    }
+    .extremo.direito {
+        right: 5%;
+        text-align: right;
+    }
+    .roda {
+        width: 85vw;
+        height: 85vw;
+    }
+    .botoes {
+        flex-direction: column;
+        gap: 10px;
+        width: 90%;
+        margin: 20px auto 0;
+    }
+    .botoes .btn {
+        width: 100%;
+    }
 }

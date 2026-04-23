@@ -1,6 +1,7 @@
 // Agarrando todos os elementos
 const btnGirar = document.querySelector('#btn-girar');
 const btnRevelar = document.querySelector('#btn-revelar');
+const btnNovaCategoria = document.querySelector('#btn-nova-categoria');
 const alvo = document.querySelector('.alvo');
 const tampaSuperior = document.querySelector('#tampa-revelar');
 const roda = document.querySelector('.roda');
@@ -50,10 +51,14 @@ function atualizarSugestao() {
         dicaRodada.classList.remove('dica-animada');
         void dicaRodada.offsetWidth;
         dicaRodada.classList.add('dica-animada');
+        
+        if(btnNovaCategoria) btnNovaCategoria.style.display = '';
     } else {
         dicaRodada.innerHTML = "&nbsp;"; // Mantém a altura da barra mas não mostra texto
         extremoEsq.classList.add('oculto');
         extremoDir.classList.add('oculto');
+        
+        if(btnNovaCategoria) btnNovaCategoria.style.display = 'none';
     }
 }
 
@@ -75,8 +80,18 @@ let estaArrastando = false;
 let centroDaRoda = { x: 0, y: 0 };
 let rotacaoAtualPonteiro = 0;
 
+// --- AÇÃO NOVA: APENAS MUDAR A CATEGORIA ---
+if(btnNovaCategoria) {
+    btnNovaCategoria.addEventListener('click', function () {
+        atualizarSugestao();
+    });
+}
+
 // --- AÇÃO 1: GIRAR A ROLETA E NOVA RODADA ---
 btnGirar.addEventListener('click', function () {
+    // Garante que a tampa seja fechada ao girar a roleta
+    tampaSuperior.classList.remove('escondida');
+
     roda.classList.add('girando');
 
     // Sorteia nova dica se a roleta girar

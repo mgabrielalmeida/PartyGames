@@ -96,18 +96,21 @@ document.addEventListener('click', (e) => {
 });
 
 function mostrarTela(tela) {
-    document.body.classList.remove('page-loaded');
-    document.body.classList.add('page-exit');
+    const atual = document.querySelector('.tela.ativa');
+    if (atual) {
+        atual.style.opacity = '0';
+        atual.style.transition = 'opacity 0.2s ease';
+    }
 
     setTimeout(() => {
         document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
         tela.classList.add('ativa');
-
-        document.body.classList.remove('page-exit');
-        setTimeout(() => {
-            document.body.classList.add('page-loaded');
-        }, 50);
-    }, 400);
+        tela.style.opacity = '0';
+        tela.style.transition = 'opacity 0.25s ease';
+        requestAnimationFrame(() => {
+            tela.style.opacity = '1';
+        });
+    }, 200);
 }
 
 function mostrarMensagem(texto, tipo) {
@@ -518,7 +521,7 @@ async function iniciarRodada() {
     mostrarTela(DOM.telaJogo);
 
     // Aguardar a transição de tela
-    await delay(550);
+    await delay(280);
 
     DOM.acoesContainer.style.display = 'none';
     DOM.statusTexto.textContent = 'Distribuindo cartas...';

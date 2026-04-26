@@ -91,24 +91,23 @@ function normalizar(texto) {
         .toUpperCase();
 }
 
-/** Troca a tela ativa com transição de fade out e fade in */
+/** Troca a tela ativa com uma transição suave */
 function mostrarTela(tela) {
-    // Inicia o fade out
-    document.body.classList.remove('page-loaded');
-    document.body.classList.add('page-exit');
+    const atual = document.querySelector('.tela.ativa');
+    if (atual) {
+        atual.style.opacity = '0';
+        atual.style.transition = 'opacity 0.2s ease';
+    }
 
-    // Aguarda o CSS transition de fade out (400ms definido em global.css)
     setTimeout(() => {
-        // Faz a troca de telas no DOM
         document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
         tela.classList.add('ativa');
-
-        // Prepara e inicia o fade in
-        document.body.classList.remove('page-exit');
-        setTimeout(() => {
-            document.body.classList.add('page-loaded');
-        }, 50);
-    }, 400);
+        tela.style.opacity = '0';
+        tela.style.transition = 'opacity 0.25s ease';
+        requestAnimationFrame(() => {
+            tela.style.opacity = '1';
+        });
+    }, 200);
 }
 
 /** Mostra mensagem flutuante de pontos */
@@ -185,8 +184,8 @@ function iniciarRodada() {
 
     mostrarTela(DOM.telaMestre);
 
-    // Foco no input após transição (400ms fade out + 50ms render + fade in)
-    setTimeout(() => DOM.inputPalavra.focus(), 800);
+    // Foco no input após transição
+    setTimeout(() => DOM.inputPalavra.focus(), 300);
 }
 
 // Filtrar input: apenas letras e espaços

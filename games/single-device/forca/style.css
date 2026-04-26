@@ -10,9 +10,9 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
@@ -47,12 +47,12 @@ body {
 
 .titulo-jogo {
     font-size: 2.4rem;
-    color: var(--accent-color);
-    text-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+    color: var(--accent-primary);
+    text-shadow: 0 0 30px rgba(255, 48, 104, 0.25);
 }
 
 .subtitulo {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1.1rem;
 }
 
@@ -79,7 +79,7 @@ body {
 }
 
 .btn-stepper:hover {
-    background: rgba(0, 229, 255, 0.15);
+    background: rgba(0, 224, 255, 0.12);
     transform: scale(1.1);
 }
 
@@ -89,7 +89,7 @@ body {
     color: var(--accent-secondary);
     min-width: 60px;
     text-align: center;
-    text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    text-shadow: 0 0 20px rgba(0, 224, 255, 0.3);
 }
 
 .link-voltar {
@@ -111,25 +111,25 @@ body {
 }
 
 .mestre-aviso {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1.1rem;
 }
 
 .mestre-destaque {
     font-size: 2rem;
-    color: var(--accent-color);
-    text-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+    color: var(--accent-primary);
+    text-shadow: 0 0 20px rgba(255, 48, 104, 0.25);
 }
 
 .contexto-card {
-    background: var(--card-bg);
+    background: var(--glass-bg);
     border: 2px solid var(--accent-secondary);
-    border-radius: var(--border-radius);
+    border-radius: var(--radius-lg);
     padding: 20px 40px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.1);
 }
 
 .contexto-label {
@@ -153,33 +153,34 @@ body {
 }
 
 .input-palavra-group label {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
 .input-palavra {
     width: 100%;
     padding: 14px 18px;
-    border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    background: var(--card-bg);
-    color: var(--text-color);
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--glass-border);
+    background: var(--bg-base);
+    color: var(--text-primary);
     font-size: 1.2rem;
     text-align: center;
     letter-spacing: 3px;
     font-weight: 600;
     text-transform: uppercase;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color var(--transition-base);
+    font-family: inherit;
 }
 
 .input-palavra:focus {
     border-color: var(--accent-secondary);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.15);
 }
 
 .erro-msg {
-    color: #ff4757;
+    color: var(--color-danger);
     font-size: 0.9rem;
     min-height: 20px;
 }
@@ -188,38 +189,40 @@ body {
    BOTÕES GLOBAIS  
    ========================================= */
 .btn-primario {
-    background: linear-gradient(135deg, var(--accent-color), #e6295a);
+    background: var(--gradient-primary);
     color: white;
     padding: 14px 36px;
     font-size: 1.1rem;
     font-weight: 700;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+    box-shadow: var(--shadow-glow-primary);
+    font-family: inherit;
 }
 
 .btn-primario:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 25px rgba(255, 51, 102, 0.5);
+    box-shadow: 0 6px 25px rgba(255, 48, 104, 0.35);
 }
 
 .btn-cancelar {
     background: transparent;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     padding: 10px 24px;
     font-size: 0.95rem;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s ease;
     margin-top: 6px;
+    font-family: inherit;
 }
 
 .btn-cancelar:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-    color: var(--text-color);
+    border-color: var(--glass-border-hover);
+    color: var(--text-primary);
 }
 
 /* =========================================
@@ -266,21 +269,21 @@ body {
 .jogo-mestre-badge {
     display: inline-block;
     padding: 4px 14px;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     font-size: 0.8rem;
     font-weight: 600;
 }
 
 .jogo-contexto-badge {
-    background: rgba(0, 229, 255, 0.15);
+    background: rgba(0, 224, 255, 0.1);
     color: var(--accent-secondary);
-    border: 1px solid rgba(0, 229, 255, 0.3);
+    border: 1px solid rgba(0, 224, 255, 0.25);
 }
 
 .jogo-mestre-badge {
-    background: rgba(255, 51, 102, 0.15);
-    color: var(--accent-color);
-    border: 1px solid rgba(255, 51, 102, 0.3);
+    background: rgba(255, 48, 104, 0.1);
+    color: var(--accent-primary);
+    border: 1px solid rgba(255, 48, 104, 0.25);
 }
 
 /* --- Placar horizontal --- */
@@ -295,12 +298,12 @@ body {
 }
 
 .placar-jogador {
-    background: var(--card-bg);
+    background: var(--glass-bg);
     padding: 5px 14px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     border: 2px solid transparent;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     flex-shrink: 0;
     min-width: 80px;
 }
@@ -318,12 +321,12 @@ body {
 }
 
 .placar-jogador.mestre {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(255, 51, 102, 0.25);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(255, 48, 104, 0.2);
 }
 
 .placar-jogador.mestre .pj-nome {
-    color: var(--accent-color);
+    color: var(--accent-primary);
 }
 
 /* --- Área principal do jogo --- */
@@ -355,11 +358,11 @@ body {
 
 .erros-label {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
 
 .erros-label span {
-    color: #ff4757;
+    color: var(--color-danger);
     font-weight: 700;
 }
 
@@ -394,7 +397,7 @@ body {
 .letra-slot .letra-char {
     font-size: 1.8rem;
     font-weight: 800;
-    color: var(--text-color);
+    color: var(--text-primary);
     height: 38px;
     display: flex;
     align-items: flex-end;
@@ -440,32 +443,33 @@ body {
     padding: 10px 0;
     font-size: 1rem;
     font-weight: 700;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--glass-border);
     border-radius: 8px;
-    background: var(--card-bg);
-    color: var(--text-color);
+    background: var(--glass-bg);
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.15s ease;
     text-align: center;
+    font-family: inherit;
 }
 
 .tecla:hover:not(.usada) {
     border-color: var(--accent-secondary);
-    background: rgba(0, 229, 255, 0.1);
+    background: rgba(0, 224, 255, 0.08);
     transform: scale(1.08);
 }
 
 .tecla.correta {
-    border-color: #2ecc71;
-    background: rgba(46, 204, 113, 0.2);
-    color: #2ecc71;
+    border-color: var(--color-success);
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--color-success);
     pointer-events: none;
 }
 
 .tecla.errada {
-    border-color: rgba(255, 71, 87, 0.3);
-    background: rgba(255, 71, 87, 0.1);
-    color: rgba(255, 71, 87, 0.4);
+    border-color: rgba(248, 113, 113, 0.25);
+    background: rgba(248, 113, 113, 0.08);
+    color: rgba(248, 113, 113, 0.4);
     pointer-events: none;
 }
 
@@ -482,14 +486,15 @@ body {
     font-size: 0.95rem;
     font-weight: 600;
     border: 2px solid var(--accent-secondary);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: inherit;
 }
 
 .btn-adivinhar:hover {
-    background: rgba(0, 229, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    background: rgba(0, 224, 255, 0.08);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.15);
     transform: scale(1.05);
 }
 
@@ -499,7 +504,7 @@ body {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: none;
@@ -514,8 +519,8 @@ body {
 }
 
 .modal-card {
-    background: var(--card-bg);
-    border-radius: var(--border-radius);
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
     padding: 28px 32px;
     text-align: center;
     display: flex;
@@ -524,8 +529,8 @@ body {
     gap: 16px;
     max-width: 460px;
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
     animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -542,7 +547,7 @@ body {
 
 .modal-titulo {
     font-size: 1.3rem;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 
 .modal-jogadores {
@@ -554,23 +559,24 @@ body {
 }
 
 .modal-jogador-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-sm);
     padding: 12px 20px;
-    color: var(--text-color);
+    color: var(--text-primary);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     min-width: 110px;
+    font-family: inherit;
 }
 
 .modal-jogador-btn:hover {
     border-color: var(--accent-secondary);
-    background: rgba(0, 229, 255, 0.1);
+    background: rgba(0, 224, 255, 0.08);
     transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.1);
 }
 
 /* --- Modal Fim de Rodada --- */
@@ -589,7 +595,7 @@ body {
 }
 
 .fim-mensagem {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.5;
 }
@@ -625,15 +631,15 @@ body {
 }
 
 .mensagem-pontos.positivo {
-    color: #2ecc71;
+    color: var(--color-success);
 }
 
 .mensagem-pontos.negativo {
-    color: #ff4757;
+    color: var(--color-danger);
 }
 
 .mensagem-pontos.mestre-venceu {
-    color: #f1c40f;
+    color: var(--color-warning);
 }
 
 /* =========================================
@@ -652,8 +658,8 @@ body {
 }
 
 @keyframes pulse-green {
-    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5); }
-    100% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+    100% { box-shadow: 0 0 0 12px rgba(52, 211, 153, 0); }
 }
 
 .pulse-acerto {

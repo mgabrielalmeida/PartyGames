@@ -10,9 +10,9 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
     display: flex;
@@ -48,12 +48,12 @@ body {
 
 .titulo-jogo {
     font-size: 2.4rem;
-    color: var(--accent-color);
-    text-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+    color: var(--accent-primary);
+    text-shadow: 0 0 30px rgba(255, 48, 104, 0.25);
 }
 
 .subtitulo {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1.1rem;
 }
 
@@ -125,21 +125,22 @@ body {
    BOTÕES GLOBAIS
    ========================================= */
 .btn-primario {
-    background: linear-gradient(135deg, var(--accent-color), #e6295a);
+    background: var(--gradient-primary);
     color: white;
     padding: 14px 36px;
     font-size: 1.1rem;
     font-weight: 700;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+    box-shadow: var(--shadow-glow-primary);
+    font-family: inherit;
 }
 
 .btn-primario:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 25px rgba(255, 51, 102, 0.5);
+    box-shadow: 0 6px 25px rgba(255, 48, 104, 0.35);
 }
 
 .btn-primario:disabled {
@@ -669,8 +670,8 @@ body {
 }
 
 .modal-card {
-    background: var(--card-bg);
-    border-radius: var(--border-radius);
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
     padding: 28px 32px;
     text-align: center;
     display: flex;
@@ -679,8 +680,8 @@ body {
     gap: 16px;
     max-width: 560px;
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
     animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     max-height: 85vh;
     overflow-y: auto;
@@ -699,7 +700,7 @@ body {
 
 .modal-titulo {
     font-size: 1.3rem;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 
 /* Modal Manual */

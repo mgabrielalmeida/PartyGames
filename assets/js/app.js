@@ -1,59 +1,117 @@
 /* =========================================
-   app.js - Lógica Global e Transições
+   app.js — Lógica Global, Transições & Tema
    ========================================= */
 
-// Usamos 'pageshow' em vez de 'DOMContentLoaded' para garantir que 
-// a transição funcione mesmo se o usuário usar o botão de voltar do navegador
-window.addEventListener('pageshow', (event) => {
+(function () {
+    'use strict';
 
-    // 1. FADE-IN DE ENTRADA
-    // Removemos a classe de saída (caso exista) e adicionamos a de entrada
-    document.body.classList.remove('page-exit');
+    /* ─── THEME TOGGLE ─────────────────────── */
+    const THEME_KEY = 'party-games-theme';
 
-    setTimeout(() => {
-        document.body.classList.add('page-loaded');
-    }, 50);
+    function getPreferredTheme() {
+        const stored = localStorage.getItem(THEME_KEY);
+        if (stored) return stored;
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
 
-    // 2. CONFIGURAÇÃO DO SOM DE CLIQUE
-    // Crie a pasta 'audio' dentro de 'assets' e coloque um arquivo de som curto lá
-    const clickSound = new Audio('assets/audio/click.mp3');
-    clickSound.volume = 0.5; // Volume em 50% para não ser muito alto
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(THEME_KEY, theme);
+    }
 
-    // 3. INTERCEPTAR LINKS (FADE-OUT E SOM)
-    // Seleciona todos os links da página (botões e cartões)
-    const links = document.querySelectorAll('a');
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+    }
 
-    links.forEach(link => {
-        link.addEventListener('click', (event) => {
+    // Aplica o tema o mais cedo possível (antes do DOM render)
+    applyTheme(getPreferredTheme());
 
-            // TOCA O SOM
-            // Usamos cloneNode para permitir que o som toque por cima dele mesmo
-            // se o usuário clicar muito rápido várias vezes
-            clickSound.cloneNode(true).play().catch(error => {
-                // Navegadores bloqueiam áudio se o usuário não tiver interagido com a página antes.
-                // O .catch evita que o console dê erro na primeira página.
-                console.log("Áudio aguardando interação do usuário.");
+    /* ─── INJECT THEME TOGGLE BUTTON ─────── */
+    function injectThemeToggle() {
+        if (document.getElementById('theme-toggle-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.id = 'theme-toggle-btn';
+        btn.className = 'theme-toggle';
+        btn.setAttribute('aria-label', 'Alternar tema claro/escuro');
+        btn.setAttribute('title', 'Alternar tema');
+        btn.innerHTML = `
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+        `;
+        btn.addEventListener('click', toggleTheme);
+        document.body.appendChild(btn);
+    }
+
+    /* ─── OVERLAY DE TRANSIÇÃO ─────────────── */
+    // Cria o overlay que cobre a página e faz o fade-in/out
+    function getOrCreateOverlay() {
+        let overlay = document.getElementById('page-transition-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'page-transition-overlay';
+            overlay.className = 'page-transition-overlay';
+            document.body.prepend(overlay);
+        }
+        return overlay;
+    }
+
+    /* ─── RESOLVE AUDIO PATH ─────────────── */
+    function resolveAudioPath() {
+        const scripts = document.querySelectorAll('script[src*="app.js"]');
+        let basePath = 'assets/';
+        if (scripts.length > 0) {
+            const src = scripts[0].getAttribute('src');
+            basePath = src.substring(0, src.lastIndexOf('js/app.js'));
+        }
+        return basePath + 'audio/click.mp3';
+    }
+
+    /* ─── INICIALIZAÇÃO ────────────────────── */
+    window.addEventListener('pageshow', () => {
+        applyTheme(getPreferredTheme());
+        injectThemeToggle();
+
+        // Cria o overlay e faz o fade-in (overlay some, conteúdo aparece)
+        const overlay = getOrCreateOverlay();
+        // Força o overlay opaco primeiro, depois desvanece
+        overlay.classList.remove('transparent');
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                overlay.classList.add('transparent');
             });
+        });
 
-            // TRANSIÇÃO DE SAÍDA (Apenas para links do próprio site)
-            // Verifica se o link tem um destino e não abre em uma nova aba
-            if (link.href && link.target !== '_blank') {
+        // CLICK SOUND
+        const clickSound = new Audio(resolveAudioPath());
+        clickSound.volume = 0.5;
 
-                // Impede o navegador de mudar de página instantaneamente
-                event.preventDefault();
+        // INTERCEPT LINKS — fade-out antes de navegar
+        document.querySelectorAll('a').forEach(link => {
+            // Evita duplicar listeners
+            if (link.dataset.transitionBound) return;
+            link.dataset.transitionBound = 'true';
 
-                const targetUrl = link.href;
+            link.addEventListener('click', (e) => {
+                // Som de clique
+                clickSound.cloneNode(true).play().catch(() => {});
 
-                // Remove a classe de entrada e adiciona a de saída (Fade-out)
-                document.body.classList.remove('page-loaded');
-                document.body.classList.add('page-exit');
+                // Transição de saída
+                if (link.href && link.target !== '_blank' && !e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    const targetUrl = link.href;
+                    const ov = getOrCreateOverlay();
+                    ov.classList.remove('transparent');
+                    ov.classList.add('fade-out');
 
-                // Aguarda 400 milissegundos (o mesmo tempo da transição no CSS)
-                // e então força o navegador a ir para a nova página
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 400);
-            }
+                    // Navega após a transição (250ms = duração do CSS)
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 200);
+                }
+            });
         });
     });
-});
+})();

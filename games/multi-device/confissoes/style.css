@@ -11,24 +11,23 @@
     --color-lie-glow: rgba(231, 76, 60, 0.4);
     --color-master: #f39c12;
     --color-master-glow: rgba(243, 156, 18, 0.4);
-    --color-bg-dark: #121216;
-    --color-surface: #1e1e24;
-    --color-surface-light: #2a2a35;
-    --text-light: #ffffff;
-    --text-muted: #a0a0b0;
-    --color-primary: #ff3366;
+    --color-surface: var(--bg-elevated, #1e1e24);
+    --color-surface-light: var(--glass-bg-hover, #2a2a35);
+    --text-light: var(--text-primary, #ffffff);
+    --color-primary: var(--accent-primary, #ff3366);
 }
 
 body {
-    background-color: var(--color-bg-dark);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-light);
+    background-color: var(--bg-base);
+    font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
+    color: var(--text-primary);
     margin: 0;
     overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
     font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
 }
 
 /* ── SCREENS ────────────────────────────── */

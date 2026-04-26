@@ -1,53 +1,158 @@
 /* =========================================
-   1. VARIÁVEIS GLOBAIS (Tema Premium Moderno)
+   1. GOOGLE FONTS
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap');
 
+/* =========================================
+   2. DESIGN TOKENS — MODO ESCURO (padrão)
+   ========================================= */
 :root {
-    --bg-base: #0a0a0f;
-    --bg-color: #0d0d14;
-    --text-color: #f0f0f5;
-    --text-muted: #8b8b9e;
+    /* Superfícies */
+    --bg-base: #0b0b12;
+    --bg-surface: #13131c;
+    --bg-elevated: #1b1b28;
 
-    /* Gradientes e Cores Principais */
-    --accent-primary: #ff2a5f;
-    --accent-secondary: #00e5ff;
-    --gradient-primary: linear-gradient(135deg, #ff2a5f 0%, #ff7b00 100%);
-    --gradient-secondary: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
-    
-    /* Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.03);
+    /* Texto */
+    --text-primary: #f2f2f7;
+    --text-secondary: #9494aa;
+    --text-muted: #6b6b80;
+
+    /* Acentos */
+    --accent-primary: #ff3068;
+    --accent-secondary: #00e0ff;
+    --accent-tertiary: #8b5cf6;
+
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, #ff3068 0%, #ff7e33 100%);
+    --gradient-secondary: linear-gradient(135deg, #00e0ff 0%, #0070ff 100%);
+    --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+    --gradient-surface: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+
+    /* Glass */
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-bg-hover: rgba(255, 255, 255, 0.07);
     --glass-border: rgba(255, 255, 255, 0.08);
-    --card-hover-bg: rgba(255, 255, 255, 0.06);
+    --glass-border-hover: rgba(255, 255, 255, 0.15);
 
-    /* Original Variables (Compatibility) */
-    --card-bg: var(--glass-bg);
-    --card-hover: var(--card-hover-bg);
-    --accent-color: var(--accent-primary);
-    
-    --border-radius: 20px;
+    /* Sombras */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+    --shadow-glow-primary: 0 0 30px rgba(255, 48, 104, 0.15);
+    --shadow-glow-secondary: 0 0 30px rgba(0, 224, 255, 0.12);
+
+    /* Status */
+    --color-success: #34d399;
+    --color-warning: #fbbf24;
+    --color-danger: #f87171;
+    --color-info: #60a5fa;
+
+    /* Efeitos */
+    --blur-glass: blur(20px);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 999px;
+
+    /* Transições */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-spring: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Layout */
     --spacing-layout: 20px;
+    --max-width-page: 900px;
+    --max-width-game: 600px;
+
+    /* Compatibilidade com variáveis antigas */
+    --bg-color: var(--bg-surface);
+    --text-color: var(--text-primary);
+    --accent-color: var(--accent-primary);
+    --card-bg: var(--glass-bg);
+    --card-hover: var(--glass-bg-hover);
+    --card-hover-bg: var(--glass-bg-hover);
+    --border-radius: var(--radius-lg);
+
+    /* Tema (para JS) */
+    --theme-icon-sun-opacity: 1;
+    --theme-icon-moon-opacity: 0;
 }
 
 /* =========================================
-   2. RESET E CONFIGURAÇÕES BASE
+   3. DESIGN TOKENS — MODO CLARO
    ========================================= */
-* {
+[data-theme="light"] {
+    --bg-base: #f5f5fa;
+    --bg-surface: #ffffff;
+    --bg-elevated: #eeeef5;
+
+    --text-primary: #1a1a2e;
+    --text-secondary: #5a5a72;
+    --text-muted: #8888a0;
+
+    --accent-primary: #e8255a;
+    --accent-secondary: #009ec9;
+    --accent-tertiary: #7c3aed;
+
+    --gradient-primary: linear-gradient(135deg, #e8255a 0%, #f06830 100%);
+    --gradient-secondary: linear-gradient(135deg, #009ec9 0%, #0060cc 100%);
+    --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+    --gradient-surface: linear-gradient(145deg, rgba(0,0,0,0.02), rgba(0,0,0,0.005));
+
+    --glass-bg: rgba(0, 0, 0, 0.03);
+    --glass-bg-hover: rgba(0, 0, 0, 0.06);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-border-hover: rgba(0, 0, 0, 0.15);
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.1);
+    --shadow-glow-primary: 0 0 30px rgba(232, 37, 90, 0.1);
+    --shadow-glow-secondary: 0 0 30px rgba(0, 158, 201, 0.08);
+
+    --color-success: #059669;
+    --color-warning: #d97706;
+    --color-danger: #dc2626;
+    --color-info: #2563eb;
+
+    --bg-color: var(--bg-surface);
+    --text-color: var(--text-primary);
+    --accent-color: var(--accent-primary);
+    --card-bg: var(--glass-bg);
+    --card-hover: var(--glass-bg-hover);
+    --card-hover-bg: var(--glass-bg-hover);
+
+    --theme-icon-sun-opacity: 0;
+    --theme-icon-moon-opacity: 1;
+}
+
+/* =========================================
+   4. RESET E CONFIGURAÇÕES BASE
+   ========================================= */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
     background-color: var(--bg-base);
-    color: var(--text-color);
+    color: var(--text-primary);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 a {
@@ -55,22 +160,36 @@ a {
     color: inherit;
 }
 
+button {
+    font-family: inherit;
+}
+
+::selection {
+    background: rgba(255, 48, 104, 0.25);
+    color: var(--text-primary);
+}
+
 /* =========================================
-   3. BACKGROUND ANIMATIONS (Glass & Orbs)
+   5. BACKGROUND ORBS (Animated)
    ========================================= */
 .bg-shape {
     position: fixed;
     border-radius: 50%;
     filter: blur(120px);
     z-index: -1;
-    opacity: 0.5;
-    animation: float 20s infinite alternate;
+    opacity: 0.4;
+    animation: orbFloat 20s infinite alternate ease-in-out;
+    transition: opacity 0.6s ease;
+}
+
+[data-theme="light"] .bg-shape {
+    opacity: 0.15;
 }
 
 .bg-shape-1 {
     width: 400px;
     height: 400px;
-    background: #ff2a5f;
+    background: var(--accent-primary);
     top: -100px;
     left: -100px;
     animation-delay: 0s;
@@ -79,7 +198,7 @@ a {
 .bg-shape-2 {
     width: 300px;
     height: 300px;
-    background: #0077ff;
+    background: #0070ff;
     bottom: -50px;
     right: -50px;
     animation-delay: -5s;
@@ -88,19 +207,88 @@ a {
 .bg-shape-3 {
     width: 250px;
     height: 250px;
-    background: #00e5ff;
+    background: var(--accent-secondary);
     top: 40%;
     left: 60%;
     animation-delay: -10s;
 }
 
-@keyframes float {
+@keyframes orbFloat {
     0% { transform: translate(0, 0) scale(1); }
     100% { transform: translate(50px, 50px) scale(1.1); }
 }
 
 /* =========================================
-   4. CABEÇALHOS E RODAPÉ
+   6. THEME TOGGLE
+   ========================================= */
+.theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    transform: scale(1.08) rotate(15deg);
+    box-shadow: var(--shadow-md);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle .icon-sun {
+    position: absolute;
+    opacity: var(--theme-icon-sun-opacity);
+    transform: scale(var(--theme-icon-sun-opacity));
+    transition: all var(--transition-base);
+}
+
+.theme-toggle .icon-moon {
+    position: absolute;
+    opacity: var(--theme-icon-moon-opacity);
+    transform: scale(var(--theme-icon-moon-opacity));
+    transition: all var(--transition-base);
+}
+
+/* =========================================
+   7. TIPOGRAFIA UTILITÁRIA
+   ========================================= */
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+.gradient-text-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* =========================================
+   8. CABEÇALHOS E RODAPÉ
    ========================================= */
 .site-header,
 .page-header {
@@ -121,16 +309,9 @@ a {
     margin-bottom: 15px;
 }
 
-.gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-}
-
 .site-header p,
 .page-header p {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1.1rem;
     max-width: 500px;
     margin: 0 auto;
@@ -141,43 +322,47 @@ a {
     padding: 30px;
     margin-top: auto;
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     position: relative;
     z-index: 10;
     border-top: 1px solid var(--glass-border);
-    background: rgba(10, 10, 15, 0.4);
-    backdrop-filter: blur(10px);
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .back-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-color);
+    color: var(--text-primary);
     margin-bottom: 30px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     padding: 8px 16px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
+    border-radius: var(--radius-full);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    font-size: 0.9rem;
 }
 
 .back-btn:hover {
-    background: var(--card-hover-bg);
+    background: var(--glass-bg-hover);
     transform: translateX(-5px);
     color: var(--accent-secondary);
     border-color: var(--accent-secondary);
 }
 
 /* =========================================
-   5. LAYOUT PRINCIPAL (Containers)
+   9. LAYOUT PRINCIPAL (Containers)
    ========================================= */
 .menu-container,
 .list-container {
     width: 100%;
-    max-width: 900px;
+    max-width: var(--max-width-page);
     margin: 0 auto;
     padding: 0 var(--spacing-layout) 60px;
     flex-grow: 1;
@@ -185,17 +370,18 @@ a {
     z-index: 10;
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism Utility */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
 }
 
 /* =========================================
-   6. MENU PRINCIPAL (Cartões Grandes)
+   10. MENU PRINCIPAL (Cartões Grandes)
    ========================================= */
 .game-modes {
     display: grid;
@@ -206,11 +392,11 @@ a {
 
 .mode-card {
     padding: 40px 30px;
-    border-radius: 24px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all var(--transition-spring);
     position: relative;
     overflow: hidden;
 }
@@ -230,12 +416,12 @@ a {
 
 .mode-icon {
     font-size: 3.5rem;
-    background: rgba(255,255,255,0.05);
+    background: var(--glass-bg);
     width: 80px; height: 80px;
     display: flex; align-items: center; justify-content: center;
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--glass-border);
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-base);
 }
 
 .mode-content {
@@ -243,15 +429,15 @@ a {
 }
 
 .mode-card h2 {
-    color: var(--text-color);
+    color: var(--text-primary);
     margin-bottom: 8px;
     font-size: 1.6rem;
     font-weight: 800;
-    transition: color 0.3s;
+    transition: color var(--transition-base);
 }
 
 .mode-card p {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.5;
 }
@@ -261,14 +447,14 @@ a {
     color: var(--text-muted);
     opacity: 0;
     transform: translateX(-20px);
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
 }
 
 .mode-card:hover {
-    background: var(--card-hover-bg);
-    border-color: rgba(255, 42, 95, 0.5);
+    background: var(--glass-bg-hover);
+    border-color: rgba(255, 48, 104, 0.4);
     transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(255, 42, 95, 0.15);
+    box-shadow: 0 15px 40px rgba(255, 48, 104, 0.12);
 }
 
 .mode-card:hover .mode-icon {
@@ -287,7 +473,7 @@ a {
 }
 
 /* =========================================
-   7. LISTA DE JOGOS (O Catálogo)
+   11. LISTA DE JOGOS (O Catálogo)
    ========================================= */
 .game-grid {
     display: grid;
@@ -298,24 +484,25 @@ a {
 
 .game-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
     border: 1px solid var(--glass-border);
-    border-radius: var(--border-radius);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: all var(--transition-spring);
     display: flex;
     flex-direction: column;
 }
 
 .game-card:hover {
-    background: var(--card-hover-bg);
+    background: var(--glass-bg-hover);
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--glass-border-hover);
 }
 
 .game-thumbnail {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.15);
     height: 160px;
     display: flex;
     align-items: center;
@@ -324,11 +511,15 @@ a {
     overflow: hidden;
 }
 
+[data-theme="light"] .game-thumbnail {
+    background: rgba(0,0,0,0.04);
+}
+
 .game-thumbnail::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; width: 100%; height: 50%;
-    background: linear-gradient(to top, var(--bg-color), transparent);
+    background: linear-gradient(to top, var(--bg-surface), transparent);
     opacity: 0.8;
 }
 
@@ -336,8 +527,8 @@ a {
     font-size: 4.5rem;
     position: relative;
     z-index: 2;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    transition: transform var(--transition-spring);
 }
 
 .game-card:hover .emoji-placeholder {
@@ -355,7 +546,8 @@ a {
 .game-details h3 {
     font-size: 1.4rem;
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--text-primary);
+    transition: color var(--transition-base);
 }
 
 .game-card:hover .game-details h3 {
@@ -363,31 +555,31 @@ a {
 }
 
 .game-details p {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.95rem;
     margin-bottom: 10px;
     flex-grow: 1;
 }
 
 /* =========================================
-   8. BADGES E BOTÕES GLOBAIS
+   12. BADGES E BOTÕES GLOBAIS
    ========================================= */
 .badge {
     display: inline-flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    color: var(--text-color);
+    color: var(--text-primary);
     padding: 6px 14px;
-    border-radius: 30px;
+    border-radius: var(--radius-full);
     font-size: 0.85rem;
     font-weight: 600;
     align-self: flex-start;
 }
 
 .online-badge {
-    background: rgba(0, 229, 255, 0.1);
-    border-color: rgba(0, 229, 255, 0.2);
+    background: rgba(0, 224, 255, 0.1);
+    border-color: rgba(0, 224, 255, 0.2);
     color: var(--accent-secondary);
 }
 
@@ -396,37 +588,132 @@ a {
     align-items: center;
     justify-content: center;
     padding: 12px 24px;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     font-size: 1rem;
     font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
+    font-family: inherit;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .btn-primary {
     background: var(--gradient-primary);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 42, 95, 0.3);
+    box-shadow: var(--shadow-glow-primary);
 }
 
 .btn-primary:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(255, 42, 95, 0.5);
+    box-shadow: 0 6px 25px rgba(255, 48, 104, 0.35);
     transform: translateY(-2px);
 }
 
-/* =========================================
-   9. ANIMAÇÕES DE TRANSIÇÃO (app.js)
-   ========================================= */
-body {
-    opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.btn-secondary {
+    background: var(--gradient-secondary);
+    color: white;
+    box-shadow: var(--shadow-glow-secondary);
 }
 
-body.page-loaded {
+.btn-secondary:hover:not(:disabled) {
+    box-shadow: 0 6px 25px rgba(0, 224, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    color: var(--text-primary);
+}
+
+/* Glass button (game-specific) */
+.glass-btn {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+}
+
+.glass-btn:hover:not(:disabled) {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+}
+
+/* =========================================
+   13. ANIMAÇÕES DE TRANSIÇÃO (app.js)
+   ========================================= */
+
+/* Overlay de transição — evita flash de opacity:0 */
+.page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-base);
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+.page-transition-overlay.transparent {
+    opacity: 0;
+}
+
+.page-transition-overlay.fade-out {
     opacity: 1;
 }
 
-body.page-exit {
-    opacity: 0;
+/* =========================================
+   14. RESPONSIVIDADE GLOBAL
+   ========================================= */
+@media (max-width: 768px) {
+    .site-header h1,
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    .mode-card {
+        padding: 30px 20px;
+    }
+    .mode-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2.5rem;
+    }
+    .mode-card h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header,
+    .page-header {
+        padding: 40px var(--spacing-layout) 25px;
+    }
+    .site-header h1,
+    .page-header h1 {
+        font-size: 1.9rem;
+    }
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+    .theme-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
 }

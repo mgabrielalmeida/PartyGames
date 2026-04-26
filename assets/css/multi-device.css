@@ -5,23 +5,12 @@
    criação/entrada de sala e lobby de espera.
    ========================================= */
 
-/* ─── VARIÁVEIS ADICIONAIS ─────────────── */
-:root {
-  --success-color: #2ecc71;
-  --warning-color: #f1c40f;
-  --danger-color: #e74c3c;
-  --glass-bg: rgba(42, 42, 53, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glow-accent: rgba(255, 51, 102, 0.3);
-  --glow-secondary: rgba(0, 229, 255, 0.3);
-}
-
 /* ─── LAYOUT DE TELAS ──────────────────── */
 .screen {
   display: none;
   animation: screenFadeIn 0.4s ease forwards;
   width: 100%;
-  max-width: 600px;
+  max-width: var(--max-width-game);
   margin: 0 auto;
   padding: 0 var(--spacing-layout);
 }
@@ -45,18 +34,18 @@
 
 .hub-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-lg);
   padding: 28px 24px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 .hub-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--glass-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .hub-card h2 {
@@ -73,7 +62,7 @@
 }
 
 .hub-card p {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.9rem;
   margin-bottom: 20px;
 }
@@ -96,10 +85,10 @@
 .form-group input {
   width: 100%;
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: var(--text-color);
+  background: var(--bg-base);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
   font-size: 1rem;
   font-family: inherit;
   outline: none;
@@ -108,11 +97,12 @@
 
 .form-group input:focus {
   border-color: var(--accent-secondary);
-  box-shadow: 0 0 0 3px var(--glow-secondary);
+  box-shadow: 0 0 0 3px rgba(0, 224, 255, 0.15);
 }
 
 .form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 /* Input do código de sala — estilo especial */
@@ -125,71 +115,29 @@
   padding: 14px 16px !important;
 }
 
-/* ─── BOTÕES ───────────────────────────── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+/* ─── BOTÕES (sobrescreve para full-width) ── */
+.hub-container .btn,
+.lobby-actions .btn {
   width: 100%;
   padding: 14px 24px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
   font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.25s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.btn:active {
-  transform: scale(0.97);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent-color), #cc2952);
-  color: #fff;
-  box-shadow: 0 4px 15px var(--glow-accent);
-}
-
-.btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 25px var(--glow-accent);
-  transform: translateY(-2px);
-}
-
 .btn-secondary {
-  background: linear-gradient(135deg, var(--accent-secondary), #00b8cc);
-  color: #1a1a24;
-  box-shadow: 0 4px 15px var(--glow-secondary);
+  background: var(--gradient-secondary);
+  color: white;
+  box-shadow: var(--shadow-glow-secondary);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  box-shadow: 0 6px 25px var(--glow-secondary);
+  box-shadow: 0 6px 25px rgba(0, 224, 255, 0.35);
   transform: translateY(-2px);
 }
 
-.btn-outline {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.btn-outline:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: var(--text-color);
-}
-
 .btn-danger {
-  background: linear-gradient(135deg, var(--danger-color), #c0392b);
+  background: linear-gradient(135deg, var(--color-danger), #dc2626);
   color: #fff;
 }
 
@@ -209,9 +157,10 @@
 /* Código da sala em destaque */
 .room-code-display {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-lg);
   padding: 24px;
   text-align: center;
 }
@@ -229,7 +178,7 @@
   font-size: 3rem;
   font-weight: 900;
   letter-spacing: 12px;
-  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -248,9 +197,10 @@
 /* Lista de jogadores */
 .players-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-lg);
   padding: 20px 24px;
 }
 
@@ -264,15 +214,15 @@
 .players-panel .panel-title {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
 .players-panel .player-count {
   font-size: 0.85rem;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  background: var(--glass-bg);
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
 }
 
 .player-list {
@@ -287,8 +237,8 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  background: var(--bg-base);
+  border-radius: var(--radius-sm);
   transition: all 0.25s ease;
   animation: playerSlideIn 0.3s ease forwards;
 }
@@ -299,8 +249,8 @@
 }
 
 .player-item.is-me {
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 224, 255, 0.2);
+  background: rgba(0, 224, 255, 0.05);
 }
 
 .player-item.disconnected {
@@ -341,7 +291,7 @@
 }
 
 .player-role.host {
-  color: var(--accent-color);
+  color: var(--accent-primary);
 }
 
 .player-role.player {
@@ -350,22 +300,23 @@
 
 .player-status {
   font-size: 0.7rem;
-  color: var(--warning-color);
+  color: var(--color-warning);
 }
 
 /* Seleção de jogo */
 .game-select-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-lg);
   padding: 20px 24px;
 }
 
 .game-select-panel .panel-title {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
@@ -380,21 +331,21 @@
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-base);
   border: 2px solid transparent;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 .game-option:hover {
-  background: rgba(0, 0, 0, 0.35);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
 }
 
 .game-option.selected {
   border-color: var(--accent-secondary);
-  background: rgba(0, 229, 255, 0.08);
+  background: rgba(0, 224, 255, 0.06);
 }
 
 .game-option.disabled {
@@ -414,7 +365,7 @@
 
 .game-option .game-desc {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-top: 2px;
 }
 
@@ -429,7 +380,7 @@
 .waiting-message {
   text-align: center;
   padding: 20px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -448,29 +399,30 @@
 .connection-status {
   position: fixed;
   top: 12px;
-  right: 12px;
+  left: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
   z-index: 100;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
+  transition: all var(--transition-base);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
 }
 
 .connection-status.connected {
-  background: rgba(46, 204, 113, 0.15);
-  color: var(--success-color);
-  border: 1px solid rgba(46, 204, 113, 0.2);
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--color-success);
+  border: 1px solid rgba(52, 211, 153, 0.2);
 }
 
 .connection-status.disconnected {
-  background: rgba(231, 76, 60, 0.15);
-  color: var(--danger-color);
-  border: 1px solid rgba(231, 76, 60, 0.2);
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--color-danger);
+  border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
 .connection-dot {
@@ -480,18 +432,18 @@
 }
 
 .connected .connection-dot {
-  background: var(--success-color);
-  box-shadow: 0 0 6px var(--success-color);
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
   animation: dotGlow 2s ease-in-out infinite;
 }
 
 .disconnected .connection-dot {
-  background: var(--danger-color);
+  background: var(--color-danger);
 }
 
 @keyframes dotGlow {
-  0%, 100% { box-shadow: 0 0 4px var(--success-color); }
-  50% { box-shadow: 0 0 10px var(--success-color); }
+  0%, 100% { box-shadow: 0 0 4px var(--color-success); }
+  50% { box-shadow: 0 0 10px var(--color-success); }
 }
 
 /* ─── TOAST / NOTIFICAÇÕES ─────────────── */
@@ -509,11 +461,12 @@
 
 .toast {
   padding: 12px 24px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   animation: toastIn 0.3s ease forwards;
   pointer-events: auto;
   text-align: center;
@@ -521,16 +474,16 @@
 }
 
 .toast.error {
-  background: rgba(231, 76, 60, 0.9);
+  background: rgba(248, 113, 113, 0.92);
 }
 
 .toast.success {
-  background: rgba(46, 204, 113, 0.9);
+  background: rgba(52, 211, 153, 0.92);
 }
 
 .toast.info {
-  background: rgba(0, 229, 255, 0.85);
-  color: #1a1a24;
+  background: rgba(0, 224, 255, 0.88);
+  color: #0b0b12;
 }
 
 .toast.exit {
@@ -563,7 +516,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--glass-border);
 }
 
 /* ─── RESPONSIVIDADE ───────────────────── */
@@ -577,7 +530,8 @@
     padding: 20px 18px;
   }
 
-  .btn {
+  .hub-container .btn,
+  .lobby-actions .btn {
     padding: 12px 20px;
     font-size: 0.9rem;
   }

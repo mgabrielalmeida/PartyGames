@@ -476,8 +476,7 @@
 
   /* ─── INICIALIZAÇÃO ──────────────────── */
   function init() {
-    // Tornar o body visível (global.css inicia com opacity: 0)
-    document.body.classList.add('page-loaded');
+    // Tornar o body visível (compatibilidade)
 
     updateRoomCodes();
     updateRoundNums(1);

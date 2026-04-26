@@ -343,7 +343,6 @@
 
   /* ─── INICIALIZAÇÃO ──────────────────── */
   function init() {
-    document.body.classList.add('page-loaded');
     updateRoomCodes();
 
     if ($waitMsg) {

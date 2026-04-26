@@ -106,10 +106,10 @@
                     ov.classList.remove('transparent');
                     ov.classList.add('fade-out');
 
-                    // Navega após a transição (250ms = duração do CSS)
+                    // Navega após a transição (350ms)
                     setTimeout(() => {
                         window.location.href = targetUrl;
-                    }, 200);
+                    }, 350);
                 }
             });
         });

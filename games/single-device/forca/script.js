@@ -96,18 +96,18 @@ function mostrarTela(tela) {
     const atual = document.querySelector('.tela.ativa');
     if (atual) {
         atual.style.opacity = '0';
-        atual.style.transition = 'opacity 0.2s ease';
+        atual.style.transition = 'opacity 0.3s ease';
     }
 
     setTimeout(() => {
         document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
         tela.classList.add('ativa');
         tela.style.opacity = '0';
-        tela.style.transition = 'opacity 0.25s ease';
+        tela.style.transition = 'opacity 0.4s ease';
         requestAnimationFrame(() => {
             tela.style.opacity = '1';
         });
-    }, 200);
+    }, 300);
 }
 
 /** Mostra mensagem flutuante de pontos */

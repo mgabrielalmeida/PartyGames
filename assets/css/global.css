@@ -667,7 +667,7 @@ button {
     z-index: 9999;
     pointer-events: none;
     opacity: 1;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.4s ease;
 }
 
 .page-transition-overlay.transparent {
